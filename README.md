@@ -69,7 +69,7 @@ $ npm install --force
 $ npm run build
 ```
 
-## Map Controller
+## Usage
 
 Each map is created using a url which provides a JSON object. The JSON object
 is used to configure a web map.
@@ -133,3 +133,5 @@ In the template use the `webmap` function:
     {{ webmap({ 'route': 'app.webmap' } ) }}
 {% endblock %}
 ```
+
+![Sample Webmap](./docs/images/ux-leafletjs_screenshot.png)
