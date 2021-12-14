@@ -1,0 +1,52 @@
+{
+    "name": "@nasumilu/ux-leafletjs",
+    "description": "Leflet integration for Symfony",
+    "license": "Apache-2.0",
+    "version": "0.0.1",
+    "main": "dist/leaflet-controller.js",
+    "module": "dist/leaflet-controller.js",
+    "symfony": {
+        "controllers": {
+            "map": {
+                "main": "dist/leaflet-controller.js",
+                "webpackMode": "eager",
+                "fetch": "eager",
+                "enabled": true
+            }
+        }
+    },
+    "scripts": {
+        "build": "yarn rollup -c",
+        "test-only": "jest --verbose true",
+        "test": "yarn build && yarn test-only"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.14.6",
+        "core-js": "^3.14.0"
+    },
+    "peerDependencies": {
+        "stimulus": "^2.0.0",
+        "leaflet": "^1.7.1"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.12.1",
+        "@babel/core": "^7.12.3",
+        "@babel/plugin-proposal-class-properties": "^7.12.1",
+        "@babel/plugin-transform-runtime": "^7.14.5",
+        "@babel/preset-env": "^7.12.7",
+        "@rollup/plugin-babel": "^5.3.0",
+        "@rollup/plugin-node-resolve": "^13.0.0",
+        "@symfony/stimulus-testing": "^1.1.0",
+        "fetch-mock-jest": "^1.5.1",
+        "node-fetch": "^2.6.1",
+        "rollup": "^2.52.2",
+        "stimulus": "^2.0.0",
+        "leaflet": "^1.7.1"
+    },
+    "jest": {
+        "testRegex": "test/.*\\.test.js",
+        "setupFilesAfterEnv": [
+            "./test/setup.js"
+        ]
+    }
+}

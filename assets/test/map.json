@@ -1,0 +1,19 @@
+{
+    "id": 1,
+    "title": "Webmap Example",
+    "description": "Some basic web map description",
+    "copyright": "Copyright text",
+    "srid": 3857,
+    "center": [51.505, -0.09],
+    "zoom": 9,
+    "layers": [
+        {
+            "id": 0,
+            "name": "Layer 1",
+            "visibility": true,
+            "minScale": 0,
+            "maxScale": 15
+        }
+    ]
+}
+
