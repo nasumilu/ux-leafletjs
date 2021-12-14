@@ -61,7 +61,7 @@ With yarn
 ```sh
 $ yarn install --force
 $ yarn build
-``
+```
 
 or with npm
 ```sh
