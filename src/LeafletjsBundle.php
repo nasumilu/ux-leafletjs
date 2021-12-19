@@ -16,16 +16,13 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leaflet;
+namespace Nasumilu\UX\Leafletjs;
+
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * 
+ *
  */
-class CRS
-{
-
-    public const EPSG3395 = 'EPSG3395';
-    public const EPSG3857 = 'EPSG3857';
-    public const EPSG4326 = 'EPSG4326';
-    
+class LeafletjsBundle extends Bundle
+{ 
 }

@@ -11,22 +11,39 @@
     ],
     "autoload": {
         "psr-4": {
-            "Nasumilu\\UX\\Leaflet\\": "src/"
+            "Nasumilu\\UX\\Leafletjs\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Nasumilu\\UX\\Leaflet\\Tests\\": "tests/"
+            "Nasumilu\\UX\\Leafletjs\\Tests\\": "tests/"
         }
     },
     "require": {
-        "php": ">=7.4",
-        "symfony/config": "^v5.0",
-        "symfony/dependency-injection": "^v5.0",
-        "symfony/http-kernel": "^v5.0",
-        "symfony/serializer": "^v5.0"
+        "php": ">=7.2.5",
+        "symfony/config": "^5.3|^6.0",
+        "symfony/dependency-injection": "^5.3|^6.0",
+        "symfony/http-kernel": "^5.3|^6.0",
+        "symfony/serializer": "^v5.3|^6.0",
+        "symfony/options-resolver": "^5.3|^6.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "9.5.10"
-    }
+        "symfony/framework-bundle": "^5.3|^6.0",
+        "symfony/phpunit-bridge": "^5.3|^6.0",
+        "symfony/twig-bundle": "^5.3|^6.0",
+        "symfony/var-dumper": "^5.3|^6.0",
+        "symfony/webpack-encore-bundle": "^1.11",
+        "symfony/yaml": "^5.3|^6.0"
+    },
+        "conflict": {
+        "symfony/flex": "<1.13",
+        "symfony/webpack-encore-bundle": "<1.11"
+    },
+    "extra": {
+        "thanks": {
+            "name": "nasumilu/ux-leafletjs",
+            "url": "https://github.com/nasumilu/ux-leafletjs"
+        }
+    },
+    "minimum-stability": "dev"
 }

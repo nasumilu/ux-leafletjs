@@ -1,5 +1,7 @@
-/* 
- * Copyright 2021 Michael Lucas
+<?php
+
+/*
+ * Copyright 2021 Michael Lucas.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +16,15 @@
  * limitations under the License.
  */
 
-'use strict';
+namespace Nasumilu\UX\Leafletjs\Loader;
 
-import { Controller } from 'stimulus';
-import { mapFactory } from './map-factory';
+use Nasumilu\UX\Leafletjs\Model\Map;
 
-export default class extends Controller {
-
-    _map = null
-    static values = {
-        url: String
-    };
-    static targets = ["map"];
-
-    async connect() {
-        this._map = await mapFactory(this.hasMapTarget ? this.mapTarget : this.element, this.urlValue);
-    }
+/**
+ * 
+ */
+interface MapLoaderInterface
+{
+    public function load($resource, $type = null): Map;
+    
 }

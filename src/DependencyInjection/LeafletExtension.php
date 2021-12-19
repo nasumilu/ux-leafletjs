@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leaflet\DependencyInjection;
+namespace Nasumilu\UX\Leafletjs\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;

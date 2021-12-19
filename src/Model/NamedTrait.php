@@ -16,40 +16,45 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leaflet\Control;
-
-use Symfony\Component\Serializer\Annotation\Ignore;
+namespace Nasumilu\UX\Leafletjs\Model;
 
 /**
+ *
  */
-class Attribution extends Control
+trait NamedTrait
 {
-    /** https://leafletjs.com/reference.html#control-attribution-prefix */
-    public const OPTION_PREFIX = 'prefix';
-    
-    public function getType(): string
-    {
-        return Control::TYPE_ATTRIBUTION;
-    }
-    
+
     /**
-     * @Ignore()
-     * @return string|null
+     * @var string
      */
-    public function getPrefix(): string
-    {
-        return $this->options[self::OPTION_PREFIX] ?? 'Leaflet';
-    }
-    
+    protected $name;
+
     /**
      * 
-     * @param string|null $prefix
-     * @return Attribution
+     * @return string
      */
-    public function setPrefix(?string $prefix = null): Attribution 
+    public function getName(): string
     {
-        $this->options[self::OPTION_PREFIX] = $prefix;
+        return $this->name;
+    }
+
+    /**
+     * 
+     * @param string $name
+     * @return self
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
         return $this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __toString()
+    {
+        return $this->name;
     }
 
 }

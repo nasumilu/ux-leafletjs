@@ -3,12 +3,12 @@
     "description": "Leflet integration for Symfony",
     "license": "Apache-2.0",
     "version": "0.0.1",
-    "main": "dist/leaflet-controller.js",
-    "module": "dist/leaflet-controller.js",
+    "main": "dist/controller.js",
+    "module": "dist/controller.js",
     "symfony": {
         "controllers": {
-            "map": {
-                "main": "dist/leaflet-controller.js",
+            "leaflet": {
+                "main": "dist/controller.js",
                 "webpackMode": "eager",
                 "fetch": "eager",
                 "enabled": true
@@ -20,12 +20,8 @@
         "test-only": "jest --verbose true",
         "test": "yarn build && yarn test-only"
     },
-    "dependencies": {
-        "@babel/runtime": "^7.14.6",
-        "core-js": "^3.14.0"
-    },
     "peerDependencies": {
-        "stimulus": "^2.0.0",
+        "@hotwired/stimulus": "^3.0.0",
         "leaflet": "^1.7.1"
     },
     "devDependencies": {
@@ -34,14 +30,14 @@
         "@babel/plugin-proposal-class-properties": "^7.12.1",
         "@babel/plugin-transform-runtime": "^7.14.5",
         "@babel/preset-env": "^7.12.7",
+        "@hotwired/stimulus": "^3.0.0",
         "@rollup/plugin-babel": "^5.3.0",
         "@rollup/plugin-node-resolve": "^13.0.0",
-        "@symfony/stimulus-testing": "^1.1.0",
-        "fetch-mock-jest": "^1.5.1",
+        "@symfony/stimulus-testing": "^2.0.0",
+        "jest-fetch-mock": "^3.0.0",
+        "leaflet": "^1.7.1",
         "node-fetch": "^2.6.1",
-        "rollup": "^2.52.2",
-        "stimulus": "^2.0.0",
-        "leaflet": "^1.7.1"
+        "rollup": "^2.52.2"
     },
     "jest": {
         "testRegex": "test/.*\\.test.js",

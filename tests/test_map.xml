@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2021 mlucas.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<webmap name="test_map">
+    <option name="zoom" value="5" />
+    <option name="center" value="29.54654 -85.654665" />
+    <option name="closePopUpOnClick" value="true"/>
+    <option name="zoomSnap" value="0.1" />
+    <option name="zoomDelta" value="0.5" />
+    <option name="trackResize" value="true" />
+    <option name="boxZoom" value="false" />
+    <option name="doubleClickZoom" value="center" />
+    <option name="dragging" value="true" />
+    <option name="minZoom" value="3" />
+    <option name="maxZoom" value="18" />
+    <option name="zoomAnimation" value="true" />
+    <option name="zoomAnimationThreshold" value="4" />
+    <option name="fadeAnimation" value="false" />
+    <option name="markerZoomAnimation" value="false" />
+    <option name="keyboard" value="true" />
+    <option name="keyboardPanDelta" value="80" />
+    <option name="scrollWheelZoom" value="true" />
+    <option name="wheelDebounceTime" value="40" />
+    <option name="wheelPxPerZoomLevel" value="60" />
+    <option name="tap" value="true" />
+    <option name="tapTolerance" value="15" />
+    <option name="touchZoom" value="true" />
+    <option name="bounceAtZoomLimits" value="false" />
+    <option name="maxBounds" value="-14.54654 -60.654665, -29.54654 85.654665" />
+    <option name="inertia" value="true" />
+    <option name="inertiaDeceleration" value="3000" />
+    <option name="inertiaMaxSpeed" value="" />
+    <option name="inertiaMaxSpeed" value="10" />
+    <option name="easeLinearity" value="0.2" />
+    <option name="worldCopyJump" value="false" />
+    <option name="maxBoundsViscosity" value="0.1" />
+    
+    <layers>
+        <layer name="layer_one" type="tile" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" >
+            <option name="legendOrder" value="1" />
+            <option name="baseMap" value="true" />
+            <option name="title" value="OpenStreetMap" />
+            <option name="attribution" value="&amp;copy; &lt;a href=&quot;https://www.openstreetmap.org/copyright\&quot;&gt;OpenStreetMap&lt;/a&gt; contributors" />
+            <option name="bounds" value="-14.54654 -60.654665, -29.54654 85.654665"/>
+            <option name="tileSize" value="256" />
+            <option name="opacity" value="0.5" />
+            <option name="updateWhenIdle" value="true" />
+            <option name="updateWhenZooming" value="true" />
+            <option name="updateInterval" value="200" />
+            <option name="zIndex" value="1" />
+            <option name="maxNativeZoom" value="10" />
+            <option name="minNativeZoom" value="0" />
+            <option name="minZoom" value="3" />
+            <option name="maxZoom" value="5" />
+            <option name="noWrap" value="true" />
+            <option name="className" value="map-tile" />
+            <option name="keepBuffer" value="2" />
+            <option name="subdomains" value="a,b,c,u" />
+            <option name="zoomOffset" value="0" />
+            <option name="tms" value="true" />
+            <option name="zoomReverse" value="false" />
+            <option name="detectRetina" value="true" />
+            <option name="crossOrigin" value="*" />
+        </layer>
+        
+        <layer name="layer_two" type="wms" url="https://map.nasumilu.com/northwood/wms">
+            <option name="legendOrder" value="1" />
+            <option name="title" value="SF College North Woods" />
+            <wms_layers>
+                <wms_layer name="northwood:boundary_perimeter" style="northwood:PerimeterStyle" />
+                <wms_layer name="northwood:boundary" />
+                <wms_layer name="northwood:tree" style="northwood:TreeStyle" />
+                <wms_layer name="northwood:trail" style="northwood:TrailStyle" />
+                <wms_layer name="northwood:natural_community" style="northwood:NaturalCommunityStyle" />
+            </wms_layers>
+        </layer>
+    </layers>
+    
+    <controls>
+        <control type="zoom">
+            <option name="position" value="topright" />
+        </control>
+        <control type="layers">
+            <option name="position" value="topleft" />
+            <option name="collapsed" value="false" />
+        </control>
+        <control type="scale">
+            <option name="position" value="bottomleft" />
+            <option name="maxWidth" value="300" />
+            <option name="metric" value="false" />
+        </control>
+        <control type="attribution">
+            <option name="position" value="bottomright" />
+            <option name="prefix" value="nasumilu.com" />
+        </control>
+    </controls>
+</webmap>
+

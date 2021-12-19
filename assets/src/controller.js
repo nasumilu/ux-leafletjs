@@ -13,28 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import L from 'leaflet';
+
+'use strict';
+
+import { Controller } from '@hotwired/stimulus';
 import { layerFactory } from './layer-factory';
 import { controlFactory } from './control-factory';
 
+export default class extends Controller {
 
-export async function mapFactory(element, url) {
+    static values = { url: String };
 
-    return await fetch(url)
+    async connect() {
+        if(!this.hasUrlValue) {
+            throw new Error('Url value not found!');
+        }
+        
+        this._dispatchEvent('leafletjs:connecting', { layerFactory: layerFactory, controlFactory: controlFactory });
+        this._map = await this._initMap();
+        this._dispatchEvent('leafletjs:connected', { map: this._map });
+    }
+    
+    async _initMap() {
+        return fetch(this.urlValue)
             .then(response => response.json())
             .then(settings => {
-                
-                const webmap = L.map(element, settings.options);
+                const webmap = L.map(this.element, settings.options);
               
-                settings.layers.forEach(layer => {
+                Object.values(settings.layers || {}).forEach(layer => {
                     layerFactory[layer.type](layer, webmap);
                 });
                 
-                settings.controls.forEach(control => {
+                Object.values(settings.controls || {}).forEach(control => {
                     controlFactory[control.type](control.options, webmap);
                 });
                 
                 return webmap;
-
-            });
+            }).catch(error => console.log(error));
+    }
+    
+    _dispatchEvent(name, payload) {
+        this.element.dispatchEvent(new CustomEvent(name, { detail: payload }));
+    }
 }

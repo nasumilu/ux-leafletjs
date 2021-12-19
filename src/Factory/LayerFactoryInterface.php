@@ -16,13 +16,30 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leaflet;
+namespace Nasumilu\UX\Leafletjs\Factory;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Nasumilu\UX\Leafletjs\Model\Layer;
 
 /**
- *
+ * 
  */
-class LeafletBundle extends Bundle
-{ 
+interface LayerFactoryInterface
+{    
+    
+    /**
+     * 
+     * @return array
+     */
+    public function getLayerTypes(): array;
+    
+    /**
+     * 
+     * @param string $type
+     * @param string $name
+     * @param string $url
+     * @param array $options
+     * @return Layer
+     */
+    public function create(string $type, string $name, string $url, array $options = []): Layer;
+    
 }

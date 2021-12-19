@@ -3,17 +3,17 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 export default [
     {
-        input: 'src/leaflet-controller.js',
+        input: 'src/controller.js',
         output: {
-            name: 'LeafletController',
-            file: 'dist/leaflet-controller.js',
+            name: 'LeafletjsController',
+            file: 'dist/controller.js',
             format: 'esm',
             sourcemap: false
         },
         external: [
             /@babel\/runtime/,
             /core-js\//,
-            'stimulus',
+            '@hotwired/stimulus',
             'leaflet'
         ],
         plugins: [

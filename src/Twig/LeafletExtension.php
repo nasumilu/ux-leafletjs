@@ -16,9 +16,10 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leaflet\Twig;
+namespace Nasumilu\UX\Leafletjs\Twig;
 
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
 use Twig\{
     Environment,
     TwigFunction,
@@ -33,30 +34,52 @@ class LeafletExtension extends AbstractExtension
 
     public const OPTION_ROUTE = 'route';
     public const OPTION_ROUTE_ARGS = 'route_args';
+    public const OPTION_CONTROLLER = 'controller';
+    public const OPTION_ATTRIBUTES = 'attributes';
     
-    private RouterInterface $router;
+    /**
+     * @var RouterInterface
+     */
+    private $router;
 
-    public function __construct(RouterInterface $router)
+    /**
+     * @var StimulusTwigExtension
+     */
+    private $stimulus;
+
+    public function __construct(StimulusTwigExtension $stimulus, RouterInterface $router)
     {
         $this->router = $router;
+        $this->stimulus = $stimulus;
     }
 
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('render_webmap', [$this, 'renderWebMap'], ['needs_environment' => true, 'is_safe' => ['html']])
+            new TwigFunction('webmap', [$this, 'renderWebMap'], ['needs_environment' => true, 'is_safe' => ['html']])
         ];
     }
 
+    /**
+     * @param Environment $environment
+     * @param array $options
+     * @return string
+     */
     public function renderWebMap(Environment $environment, array $options = []): string
     {
         $url = $this->router->generate($options[self::OPTION_ROUTE], $options[self::OPTION_ROUTE_ARGS] ?? []);
-        $html = '<div data-controller="nasumilu--ux-leafletjs--map" data-nasumilu--ux-leafletjs--map-url-value="' . $url . '">'
-                . '<div data-nasumilu--ux-leafletjs--map-target="map"></div>'
-                . '</div>';
         
+        $controllers = array_merge($options[self::OPTION_CONTROLLER] ?? [], ['@nasumilu/ux-leafletjs/map' => ['url' => $url]]);
+        $html = '<div '.$this->stimulus->renderStimulusController($env, $controllers).' ';
         
-        return trim($html);
+        foreach($options[self::OPTION_ATTRIBUTES] ?? [] as $name => $value) {
+            if(true === $value) {
+                $html .= $name.'="'.$name.'" ';
+            } elseif (false != $value) {
+                $html .= $name.'="'.$value.'" ';
+            }
+        }
+        return trim($html).'></div>';
     }
 
 }

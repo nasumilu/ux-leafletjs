@@ -1,14 +1,13 @@
 import _asyncToGenerator from '@babel/runtime/helpers/asyncToGenerator';
 import _classCallCheck from '@babel/runtime/helpers/classCallCheck';
 import _createClass from '@babel/runtime/helpers/createClass';
-import _assertThisInitialized from '@babel/runtime/helpers/assertThisInitialized';
 import _inherits from '@babel/runtime/helpers/inherits';
 import _possibleConstructorReturn from '@babel/runtime/helpers/possibleConstructorReturn';
 import _getPrototypeOf from '@babel/runtime/helpers/getPrototypeOf';
 import _defineProperty from '@babel/runtime/helpers/defineProperty';
 import _regeneratorRuntime from '@babel/runtime/regenerator';
-import { Controller } from 'stimulus';
-import L from 'leaflet';
+import { Controller } from '@hotwired/stimulus';
+import L$1 from 'leaflet';
 import _slicedToArray from '@babel/runtime/helpers/slicedToArray';
 
 function geoJsonLayerFactory (_x, _x2) {
@@ -26,7 +25,7 @@ function _ref() {
             return fetch(url).then(function (response) {
               return response.json();
             }).then(function (data) {
-              return L.geoJson(data, {
+              return L$1.geoJson(data, {
                 style: function style(feature) {
                   return options.style;
                 }
@@ -67,7 +66,7 @@ function wmsLayerFactory (url, options) {
     }
   }
 
-  return L.tileLayer.wms(url, layerOptions);
+  return L$1.tileLayer.wms(url, layerOptions);
 }
 
 var layerFactory = {
@@ -78,7 +77,7 @@ var layerFactory = {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return L.tileLayer(args.url, args.options).addTo(webmap);
+              return L$1.tileLayer(args.url, args.options).addTo(webmap);
 
             case 2:
               return _context.abrupt("return", _context.sent);
@@ -200,13 +199,13 @@ var layerSort = {
  */
 var controlFactory = {
   scale: function scale(options, webmap) {
-    return L.control.scale(options).addTo(webmap);
+    return L$1.control.scale(options).addTo(webmap);
   },
   zoom: function zoom(options, webmap) {
-    return L.control.zoom(options).addTo(webmap);
+    return L$1.control.zoom(options).addTo(webmap);
   },
   attribution: function attribution(options, webmap) {
-    return L.control.attribution(options).addTo(webmap);
+    return L$1.control.attribution(options).addTo(webmap);
   },
   legend: function legend(options, webmap) {
     var baselayers = {};
@@ -228,46 +227,9 @@ var controlFactory = {
         overlays[title] = layer;
       }
     });
-    return L.control.layers(baselayers, overlays, legendOptions).addTo(webmap);
+    return L$1.control.layers(baselayers, overlays, legendOptions).addTo(webmap);
   }
 };
-
-function mapFactory(_x, _x2) {
-  return _mapFactory.apply(this, arguments);
-}
-
-function _mapFactory() {
-  _mapFactory = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(element, url) {
-    return _regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.next = 2;
-            return fetch(url).then(function (response) {
-              return response.json();
-            }).then(function (settings) {
-              var webmap = L.map(element, settings.options);
-              settings.layers.forEach(function (layer) {
-                layerFactory[layer.type](layer, webmap);
-              });
-              settings.controls.forEach(function (control) {
-                controlFactory[control.type](control.options, webmap);
-              });
-              return webmap;
-            });
-
-          case 2:
-            return _context.abrupt("return", _context.sent);
-
-          case 3:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-  return _mapFactory.apply(this, arguments);
-}
 
 /* 
  * Copyright 2021 Michael Lucas
@@ -295,19 +257,9 @@ var _default = /*#__PURE__*/function (_Controller) {
   var _super = _createSuper(_default);
 
   function _default() {
-    var _this;
-
     _classCallCheck(this, _default);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    _this = _super.call.apply(_super, [this].concat(args));
-
-    _defineProperty(_assertThisInitialized(_this), "_map", null);
-
-    return _this;
+    return _super.apply(this, arguments);
   }
 
   _createClass(_default, [{
@@ -318,13 +270,30 @@ var _default = /*#__PURE__*/function (_Controller) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return mapFactory(this.hasMapTarget ? this.mapTarget : this.element, this.urlValue);
+                if (this.hasUrlValue) {
+                  _context.next = 2;
+                  break;
+                }
+
+                throw new Error('Url value not found!');
 
               case 2:
+                this._dispatchEvent('leafletjs:connecting', {
+                  layerFactory: layerFactory,
+                  controlFactory: controlFactory
+                });
+
+                _context.next = 5;
+                return this._initMap();
+
+              case 5:
                 this._map = _context.sent;
 
-              case 3:
+                this._dispatchEvent('leafletjs:connected', {
+                  map: this._map
+                });
+
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -338,6 +307,52 @@ var _default = /*#__PURE__*/function (_Controller) {
 
       return connect;
     }()
+  }, {
+    key: "_initMap",
+    value: function () {
+      var _initMap2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
+        var _this = this;
+
+        return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                return _context2.abrupt("return", fetch(this.urlValue).then(function (response) {
+                  return response.json();
+                }).then(function (settings) {
+                  var webmap = L.map(_this.element, settings.options);
+                  Object.values(settings.layers || {}).forEach(function (layer) {
+                    layerFactory[layer.type](layer, webmap);
+                  });
+                  Object.values(settings.controls || {}).forEach(function (control) {
+                    controlFactory[control.type](control.options, webmap);
+                  });
+                  return webmap;
+                })["catch"](function (error) {
+                  return console.log(error);
+                }));
+
+              case 1:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function _initMap() {
+        return _initMap2.apply(this, arguments);
+      }
+
+      return _initMap;
+    }()
+  }, {
+    key: "_dispatchEvent",
+    value: function _dispatchEvent(name, payload) {
+      this.element.dispatchEvent(new CustomEvent(name, {
+        detail: payload
+      }));
+    }
   }]);
 
   return _default;
@@ -346,7 +361,5 @@ var _default = /*#__PURE__*/function (_Controller) {
 _defineProperty(_default, "values", {
   url: String
 });
-
-_defineProperty(_default, "targets", ["map"]);
 
 export { _default as default };
