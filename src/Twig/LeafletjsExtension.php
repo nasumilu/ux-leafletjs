@@ -29,7 +29,7 @@ use function trim;
 
 /**
  */
-class LeafletExtension extends AbstractExtension
+class LeafletjsExtension extends AbstractExtension
 {
 
     public const OPTION_ROUTE = 'route';

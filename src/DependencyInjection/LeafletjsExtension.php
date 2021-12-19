@@ -22,13 +22,14 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Reference;
-use Nasumilu\UX\Leaflet\Twig\LeafletExtension as LeafletTwigExtension;
+use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
+use Nasumilu\UX\Leafletjs\Twig\LeafletjsExtension as LeafletTwigExtension;
 use Twig\Environment;
 use Symfony\Component\Routing\RouterInterface;
 /**
  * 
  */
-class LeafletExtension extends Extension
+class LeafletjsExtension extends Extension
 {
 
     public function load(array $configs, ContainerBuilder $container)
@@ -36,7 +37,10 @@ class LeafletExtension extends Extension
 
         if (class_exists(Environment::class)) {
             $container
-                    ->setDefinition('leaflet.twig_extension', new Definition(LeafletTwigExtension::class, [new Reference(RouterInterface::class)]))
+                    ->setDefinition('leaflet.twig_extension', 
+                            new Definition(LeafletTwigExtension::class, [
+                                new StimulusTwigExtension(),
+                                new Reference(RouterInterface::class)]))
                     ->addTag('twig.extension')
                     ->setPublic(false);
         }
