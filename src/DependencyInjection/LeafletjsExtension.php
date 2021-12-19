@@ -22,7 +22,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\WebpackEncoreBundle\Twig\StimulusTwigExtension;
 use Nasumilu\UX\Leafletjs\Twig\LeafletjsExtension as LeafletTwigExtension;
 use Twig\Environment;
 use Symfony\Component\Routing\RouterInterface;
@@ -39,7 +38,7 @@ class LeafletjsExtension extends Extension
             $container
                     ->setDefinition('leaflet.twig_extension', 
                             new Definition(LeafletTwigExtension::class, [
-                                new Reference(StimulusTwigExtension::class),
+                                new Reference('webpack_encore.twig_stimulus_extension'),
                                 new Reference(RouterInterface::class)]))
                     ->addTag('twig.extension')
                     ->setPublic(false);
