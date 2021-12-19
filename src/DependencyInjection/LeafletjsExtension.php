@@ -39,7 +39,7 @@ class LeafletjsExtension extends Extension
             $container
                     ->setDefinition('leaflet.twig_extension', 
                             new Definition(LeafletTwigExtension::class, [
-                                new Reference(new StimulusTwigExtension()),
+                                new Reference(StimulusTwigExtension::class),
                                 new Reference(RouterInterface::class)]))
                     ->addTag('twig.extension')
                     ->setPublic(false);
