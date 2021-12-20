@@ -44,7 +44,7 @@ export default class extends Controller {
                     layerFactory[layer.type](layer, webmap);
                 });
                 
-                Object.values(settings.controls || {}).forEach(control => {
+                settings.controls?.forEach(control => {
                     controlFactory[control.type](control.options, webmap);
                 });
                 

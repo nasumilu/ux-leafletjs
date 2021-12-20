@@ -207,7 +207,7 @@ var controlFactory = {
   attribution: function attribution(options, webmap) {
     return L$1.control.attribution(options).addTo(webmap);
   },
-  legend: function legend(options, webmap) {
+  layers: function layers(options, webmap) {
     var baselayers = {};
     var overlays = {};
     var legendOptions = Object.assign({}, options);
@@ -320,11 +320,13 @@ var _default = /*#__PURE__*/function (_Controller) {
                 return _context2.abrupt("return", fetch(this.urlValue).then(function (response) {
                   return response.json();
                 }).then(function (settings) {
+                  var _settings$controls;
+
                   var webmap = L.map(_this.element, settings.options);
                   Object.values(settings.layers || {}).forEach(function (layer) {
                     layerFactory[layer.type](layer, webmap);
                   });
-                  Object.values(settings.controls || {}).forEach(function (control) {
+                  (_settings$controls = settings.controls) === null || _settings$controls === void 0 ? void 0 : _settings$controls.forEach(function (control) {
                     controlFactory[control.type](control.options, webmap);
                   });
                   return webmap;

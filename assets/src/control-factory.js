@@ -21,7 +21,7 @@ export const controlFactory = {
     scale: (options, webmap) => L.control.scale(options).addTo(webmap),
     zoom: (options, webmap) => L.control.zoom(options).addTo(webmap),
     attribution: (options, webmap) => L.control.attribution(options).addTo(webmap),
-    legend: (options, webmap) => {
+    layers: (options, webmap) => {
         
         let baselayers = {};
         let overlays = {};
