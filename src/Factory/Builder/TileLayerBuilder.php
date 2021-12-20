@@ -56,12 +56,6 @@ class TileLayerBuilder extends GridLayerBuilder
         
         parent::configureOptions($optionsResolver);
 
-        $optionsResolver->define('baseLayer')
-                ->allowedTypes('bool', 'string')
-                ->normalize($castToBool)
-                ->info('Indicates whether the layer is a base layer or an '
-                        . 'overlay');
-
         $optionsResolver->define('subdomains')
                 ->allowedTypes('string', 'array')
                 ->info('Subdomains of the tile service.');

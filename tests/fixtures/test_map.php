@@ -94,7 +94,7 @@ return [
                 'url' => 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 'options' => [
                     'legendOrder' => 1,
-                    'baseMap' => true,
+                    'baseLayer' => true,
                     'title' => 'OpenStreetMap',
                     'attribution' => '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                     'tileSize' => [256, 256],
@@ -124,7 +124,7 @@ return [
                 'url' => 'https://map.nasumilu.com/northwood/wms',
                 'options' => [
                     'legendOrder' => 1,
-                    'baseMap' => false,
+                    'baseLayer' => false,
                     'title' => 'SF College North Woods',
                     'tileSize' => [256, 256],
                     'opacity' => 0.5,

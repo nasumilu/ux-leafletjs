@@ -51,7 +51,7 @@ limitations under the License.
     <layers>
         <layer name="layer_one" type="tile" url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" >
             <option name="legendOrder" value="1" />
-            <option name="baseMap" value="true" />
+            <option name="baseLayer" value="true" />
             <option name="title" value="OpenStreetMap" />
             <option name="attribution" value="&amp;copy; &lt;a href=&quot;https://www.openstreetmap.org/copyright\&quot;&gt;OpenStreetMap&lt;/a&gt; contributors" />
             <option name="bounds" value="-14.54654 -60.654665, -29.54654 85.654665"/>

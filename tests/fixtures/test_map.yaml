@@ -7,7 +7,7 @@ test_map:
             url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
             options:
                 legendOrder: 1
-                baseMap: true
+                baseLayer: true
                 bounds: [[-14.54654, -60.654665], [-29.54654, 85.654665]]
         layer_two:
             type: wms

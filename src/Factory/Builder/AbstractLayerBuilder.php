@@ -84,7 +84,7 @@ abstract class AbstractLayerBuilder implements LayerBuilderInterface
                 ->allowedTypes('string')
                 ->info('A title to use un the Legend');
 
-        $optionsResolver->define('baseMap')
+        $optionsResolver->define('baseLayer')
                 ->allowedTypes('bool', 'string')
                 ->normalize($castToBool)
                 ->info('Indicates whether the layer is a base map or an overlay');
