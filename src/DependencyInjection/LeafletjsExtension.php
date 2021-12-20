@@ -18,6 +18,8 @@
 
 namespace Nasumilu\UX\Leafletjs\DependencyInjection;
 
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -25,6 +27,7 @@ use Symfony\Component\DependencyInjection\Reference;
 use Nasumilu\UX\Leafletjs\Twig\LeafletjsExtension as LeafletTwigExtension;
 use Twig\Environment;
 use Symfony\Component\Routing\RouterInterface;
+
 /**
  * 
  */
@@ -34,15 +37,34 @@ class LeafletjsExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
 
+        $loader = new YamlFileLoader(
+                $container,
+                new FileLocator(__DIR__ . '/../../config')
+        );
+        $loader->load('services.yaml');
+        
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+
         if (class_exists(Environment::class)) {
             $container
-                    ->setDefinition('leaflet.twig_extension', 
+                    ->setDefinition('leafletjs.twig_extension',
                             new Definition(LeafletTwigExtension::class, [
                                 new Reference('webpack_encore.twig_stimulus_extension'),
                                 new Reference(RouterInterface::class)]))
                     ->addTag('twig.extension')
                     ->setPublic(false);
         }
+        
+        $paths = $config['paths'] ?? ['%kernel.project_dir%/config/maps'];
+        
+        $container->findDefinition('leafletjs.file_locator')
+                ->setArgument('$paths', $paths);
+    }
+    
+    public function getAlias(): string
+    {
+        return 'leafletjs';
     }
 
 }

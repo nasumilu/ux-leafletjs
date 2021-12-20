@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leafletjs\Loader;
+namespace Nasumilu\UX\Leafletjs\Factory;
 
 use Nasumilu\UX\Leafletjs\Model\Map;
 
@@ -25,6 +25,8 @@ use Nasumilu\UX\Leafletjs\Model\Map;
  */
 interface MapLoaderInterface
 {
-    public function load($resource, $type = null): Map;
+    
+    
+    public function load(string $name, string $format = 'yaml'): Map;
     
 }

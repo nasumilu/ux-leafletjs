@@ -22,6 +22,8 @@ use Symfony\Component\OptionsResolver\{
     OptionsResolver,
     Options
 };
+use Symfony\Component\Config\Loader\DelegatingLoader;
+use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Nasumilu\UX\Leafletjs\Model\Map;
 use function array_filter;
@@ -31,9 +33,14 @@ use function in_array;
 /**
  * 
  */
-class MapFactory implements MapFactoryInterface
+class MapFactory implements MapFactoryInterface, MapLoaderInterface
 {
 
+    /**
+     * @var LoaderInterface
+     */
+    private $loader;
+    
     /**
      * @var OptionsResolver
      */
@@ -55,18 +62,57 @@ class MapFactory implements MapFactoryInterface
     private $router;
 
     /**
-     * 
      * @param LayerFactoryInterface $layerFactory
      * @param ControlFactoryInterface $controlFactory
      * @param RouterInterface $router
      */
-    public function __construct(LayerFactoryInterface $layerFactory, ControlFactoryInterface $controlFactory, RouterInterface $router)
+    public function __construct(LoaderResolverInterface $loaderResolver,
+            LayerFactoryInterface $layerFactory, 
+            ControlFactoryInterface $controlFactory, 
+            RouterInterface $router)
     {
+        $this->loader = new DelegatingLoader($loaderResolver);
         $this->layerFactory = $layerFactory;
         $this->controlFactory = $controlFactory;
         $this->router = $router;
         $this->optionsResolver = new OptionsResolver();
         $this->configureOptions($this->optionsResolver);
+    }
+    
+    /**
+     * 
+     * @return LoaderInterface
+     */
+    public function getLoader(): LoaderInterface
+    {
+        return $this->loader;
+    }
+    
+    /**
+     * 
+     * @return LayerFactoryInterface
+     */
+    public function getLayerFactory(): LayerFactoryInterface
+    {
+        return $this->layerFactory;
+    }
+    
+    /**
+     * 
+     * @return ControlFactoryInterface
+     */
+    public function getControlFactory(): ControlFactoryInterface
+    {
+        return $this->controlFactory;
+    }
+    
+    /**
+     * 
+     * @return RouterInterface
+     */
+    public function getRouter(): RouterInterface
+    {
+        return $this->router;
     }
 
     /**
@@ -426,6 +472,12 @@ class MapFactory implements MapFactoryInterface
         return new Map($name, array_filter($mapOptions, static function ($value) {
                     return !is_null($value);
                 }));
+    }
+    
+    public function load(string $name, string $format = 'yaml'): Map
+    {
+        $config = $this->loader->load("$name.$format");
+        return $this->create($name, $config);
     }
 
 }

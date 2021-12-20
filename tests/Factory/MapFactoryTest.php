@@ -21,6 +21,13 @@ namespace Nasumilu\UX\Leafletjs\Tests\Factory;
 use PHPUnit\Framework\TestCase;
 use Nasumilu\UX\Leafletjs\Model\Map;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Config\Loader\LoaderResolver;
+use Symfony\Component\Config\FileLocator;
+use Nasumilu\UX\Leafletjs\Factory\Loader\{
+    XmlMapLoader,
+    YamlMapLoader,
+    PhpMapLoader
+};
 use Nasumilu\UX\Leafletjs\Factory\{
     LayerFactory,
     ControlFactory,
@@ -50,6 +57,8 @@ class MapFactoryTest extends TestCase
         $router->expects($this->any())
                 ->method('generate')
                 ->willReturn('https://gernerated_route');
+        $locator = new FileLocator(__DIR__.'/../fixtures');
+        $loaderResolver = new LoaderResolver([new PhpMapLoader($locator), new YamlMapLoader($locator), new XmlMapLoader($locator)]);
 
         $layerFactory = new LayerFactory(new TileLayerBuilder($router));
         $layerFactory->addBuilder(new WMSLayerBuilder($router));
@@ -60,20 +69,9 @@ class MapFactoryTest extends TestCase
             new ScaleControlBuilder(),
             new LayersControlBuilder()
         ]);
-        $facotry = new MapFactory($layerFactory, $controlFactory, $router);
-        $options = require __DIR__. '/../test_map.php';
-
-        $map = $facotry->create('test', $options);
+        $facotry = new MapFactory($loaderResolver, $layerFactory, $controlFactory, $router);
+        $map = $facotry->load('test_map', 'php');
         $this->assertInstanceOf(Map::class, $map);
-
-        $mapOptions = $map->getOptions();
-        foreach ($options as $key => $value) {
-            if (in_array($key, ['layers', 'controls'])) {
-                $this->assertArrayNotHasKey($key, $mapOptions);
-            } else {
-                $this->assertEquals($value, $map->getOption($key));
-            }
-        }
     }
 
 }

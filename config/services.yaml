@@ -1,0 +1,81 @@
+services:
+    
+    
+     #'%env(string:APP_ENV)%'
+     
+     
+    # LoaderResolverInterface
+    leafletjs.file_locator:
+        class: Symfony\Component\Config\FileLocator
+    
+    Nasumilu\UX\Leafletjs\Factory\Loader\XmlMapLoader:
+        arguments:
+            $locator: '@leafletjs.file_locator'
+            
+    Nasumilu\UX\Leafletjs\Factory\Loader\YamlMapLoader:
+        arguments:
+            $locator: '@leafletjs.file_locator'
+            
+    Nasumilu\UX\Leafletjs\Factory\Loader\PhpMapLoader:
+        arguments:
+            $locator: '@leafletjs.file_locator'
+    
+    leafletjs.loader_resolver:
+        class: Symfony\Component\Config\Loader\LoaderResolver
+        arguments:
+            $loaders:
+                - '@Nasumilu\UX\Leafletjs\Factory\Loader\XmlMapLoader'
+                - '@Nasumilu\UX\Leafletjs\Factory\Loader\YamlMapLoader'
+                - '@Nasumilu\UX\Leafletjs\Factory\Loader\PhpMapLoader'
+    ##
+    
+    # Layer Builders
+    Nasumilu\UX\Leafletjs\Factory\Builder\TileLayerBuilder:
+        arguments:
+            $router: '@Symfony\Component\Routing\RouterInterface'
+    
+    Nasumilu\UX\Leafletjs\Factory\Builder\WMSLayerBuilder:
+        arguments:
+            $router: '@Symfony\Component\Routing\RouterInterface'
+    ##
+    
+    # Layer Factory
+    Nasumilu\UX\Leafletjs\Factory\LayerFactory:
+        arguments:
+            - '@Nasumilu\UX\Leafletjs\Factory\Builder\TileLayerBuilder'
+            - '@Nasumilu\UX\Leafletjs\Factory\Builder\WMSLayerBuilder'
+        
+    Nasumilu\UX\Leafletjs\Factory\LayerFactoryInterface: '@Nasumilu\UX\Leafletjs\Factory\LayerFactory'
+    ##
+
+    # Control Builders
+    Nasumilu\UX\Leafletjs\Factory\Builder\AttributionControlBuilder: ~
+    Nasumilu\UX\Leafletjs\Factory\Builder\LayersControlBuilder: ~
+    Nasumilu\UX\Leafletjs\Factory\Builder\ScaleControlBuilder: ~
+    Nasumilu\UX\Leafletjs\Factory\Builder\ZoomControlBuilder: ~
+    ##
+      
+    # Control Factory
+    Nasumilu\UX\Leafletjs\Factory\ControlFactory:
+        arguments:
+            - '@Nasumilu\UX\Leafletjs\Factory\Builder\AttributionControlBuilder'
+            - '@Nasumilu\UX\Leafletjs\Factory\Builder\LayersControlBuilder'
+            - '@Nasumilu\UX\Leafletjs\Factory\Builder\ScaleControlBuilder'
+            - '@Nasumilu\UX\Leafletjs\Factory\Builder\ZoomControlBuilder'
+            
+    Nasumilu\UX\Leafletjs\Factory\ControlFactoryInterface: '@Nasumilu\UX\Leafletjs\Factory\ControlFactory'
+    ##
+    
+    # Map Factory
+    Nasumilu\UX\Leafletjs\Factory\MapFactory:
+        arguments:
+            $loaderResolver: '@leafletjs.loader_resolver'
+            $layerFactory: '@Nasumilu\UX\Leafletjs\Factory\LayerFactoryInterface'
+            $controlFactory: '@Nasumilu\UX\Leafletjs\Factory\ControlFactoryInterface'
+            $router: '@Symfony\Component\Routing\RouterInterface'
+    
+    Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface: 
+        public: true
+        alias: Nasumilu\UX\Leafletjs\Factory\MapFactory
+    ##
+            

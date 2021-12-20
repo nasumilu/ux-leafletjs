@@ -16,46 +16,26 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leafletjs\Loader;
+namespace Nasumilu\UX\Leafletjs\Factory\Loader;
 
 use Symfony\Component\Config\Loader\FileLoader;
-use Symfony\Component\Config\FileLocatorInterface;
-use Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface;
 use Symfony\Component\Yaml\Yaml;
-use Nasumilu\UX\Leafletjs\Model\Map;
 
 /**
  * 
  */
-class YamlMapLoader extends FileLoader implements MapLoaderInterface
+class YamlMapLoader extends FileLoader
 {
-
-    /**
-     * @var MapFactoryInterface
-     */
-    private $factory;
-    
-    /**
-     * 
-     * @param MapFactoryInterface $factory
-     * @param FileLocatorInterface $locator
-     * @param string $env
-     */
-    public function __construct(MapFactoryInterface $factory, FileLocatorInterface $locator, string $env = null)
-    {
-        parent::__construct($locator, $env);
-        $this->factory = $factory;
-    }
     
     /**
      * {@inheritDoc}
      */
-    public function load($resource, $type = null): Map
+    public function load($resource, $type = null): array
     {
         $name = pathinfo($resource, PATHINFO_FILENAME);
         $file = $this->getLocator()->locate($resource);
         $options = Yaml::parse(file_get_contents($file));
-        return $this->factory->create($name, $options[$name]);
+        return $options[$name];
     }
 
     

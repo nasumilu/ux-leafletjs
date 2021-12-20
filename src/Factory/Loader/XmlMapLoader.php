@@ -16,30 +16,16 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leafletjs\Loader;
+namespace Nasumilu\UX\Leafletjs\Factory\Loader;
 
 use SimpleXMLElement;
 use Symfony\Component\Config\Loader\FileLoader;
-use Symfony\Component\Config\FileLocatorInterface;
-use Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface;
-use Nasumilu\UX\Leafletjs\Model\Map;
 
 /**
  * 
  */
-class XmlMapLoader extends FileLoader implements MapLoaderInterface
+class XmlMapLoader extends FileLoader
 {
-
-    /**
-     * @var MapFactoryInterface
-     */
-    private $factory;
-
-    public function __construct(MapFactoryInterface $factory, FileLocatorInterface $locator, string $env = null)
-    {
-        parent::__construct($locator, $env);
-        $this->factory = $factory;
-    }
 
     /**
      * 
@@ -47,7 +33,7 @@ class XmlMapLoader extends FileLoader implements MapLoaderInterface
      * @param type $type
      * @return Map
      */
-    public function load($resource, $type = null): Map
+    public function load($resource, $type = null): array
     {
         $file = $this->getLocator()->locate($resource);
         $webmap = new SimpleXMLElement(file_get_contents($file));
@@ -56,8 +42,7 @@ class XmlMapLoader extends FileLoader implements MapLoaderInterface
         $configs['layers'] = $this->parseLayers($webmap);
         $configs['controls'] = $this->parseControls($webmap);
         
-        return $this->factory->create((string) $webmap['name'], $configs);
-        
+        return $configs;
     }
 
     /**

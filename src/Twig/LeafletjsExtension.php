@@ -70,7 +70,7 @@ class LeafletjsExtension extends AbstractExtension
         $url = $this->router->generate($options[self::OPTION_ROUTE], $options[self::OPTION_ROUTE_ARGS] ?? []);
         
         $controllers = array_merge($options[self::OPTION_CONTROLLER] ?? [], ['@nasumilu/ux-leafletjs/map' => ['url' => $url]]);
-        $html = '<div '.$this->stimulus->renderStimulusController($env, $controllers).' ';
+        $html = '<div '.$this->stimulus->renderStimulusController($environment, $controllers).' ';
         
         foreach($options[self::OPTION_ATTRIBUTES] ?? [] as $name => $value) {
             if(true === $value) {
