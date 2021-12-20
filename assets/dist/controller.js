@@ -266,6 +266,7 @@ var _default = /*#__PURE__*/function (_Controller) {
     key: "connect",
     value: function () {
       var _connect = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+        var map;
         return _regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -283,13 +284,17 @@ var _default = /*#__PURE__*/function (_Controller) {
                   controlFactory: controlFactory
                 });
 
-                this._map = this._initMap();
-
-                this._dispatchEvent('leafletjs:connected', {
-                  map: this._map
-                });
+                _context.next = 5;
+                return this._initMap();
 
               case 5:
+                map = _context.sent;
+
+                this._dispatchEvent('leafletjs:connected', {
+                  map: map
+                });
+
+              case 7:
               case "end":
                 return _context.stop();
             }

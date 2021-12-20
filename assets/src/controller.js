@@ -30,8 +30,8 @@ export default class extends Controller {
         }
         
         this._dispatchEvent('leafletjs:connecting', { layerFactory: layerFactory, controlFactory: controlFactory });
-        this._map = this._initMap();
-        this._dispatchEvent('leafletjs:connected', { map: this._map });
+        const map = await this._initMap();
+        this._dispatchEvent('leafletjs:connected', { map: map });
     }
     
     async _initMap() {
