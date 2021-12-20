@@ -30,9 +30,6 @@ class ControlBuilderPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(ControlBuilderRegistry::class)) {
-            return;
-        }
 
         $definition = $container->findDefinition(ControlBuilderRegistry::class);
 

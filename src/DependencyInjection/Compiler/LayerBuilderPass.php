@@ -33,10 +33,6 @@ class LayerBuilderPass implements CompilerPassInterface
 
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition(LayerBuilderRegistry::class)) {
-            return;
-        }
-
         $definition = $container->findDefinition(LayerBuilderRegistry::class);
 
         $taggedServices = $container->findTaggedServiceIds('leafletjs.layer_builder');
