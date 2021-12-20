@@ -36,7 +36,7 @@ class ControlBuilderPass implements CompilerPassInterface
 
         $definition = $container->findDefinition(ControlBuilderRegistry::class);
 
-        $taggedServices = $container->findTaggedServiceIds('leaflet.control_builder');
+        $taggedServices = $container->findTaggedServiceIds('leafletjs.control_builder');
 
         foreach ($taggedServices as $id => $tags) {
             $definition->addMethodCall('addBuilder', [new Reference($id)]);

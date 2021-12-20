@@ -39,7 +39,7 @@ class LayerBuilderPass implements CompilerPassInterface
 
         $definition = $container->findDefinition(LayerBuilderRegistry::class);
 
-        $taggedServices = $container->findTaggedServiceIds('leaflet.layer_builder');
+        $taggedServices = $container->findTaggedServiceIds('leafletjs.layer_builder');
 
         foreach ($taggedServices as $id => $tags) {
             $definition->addMethodCall('addBuilder', [new Reference($id)]);
