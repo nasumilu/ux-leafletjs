@@ -283,17 +283,13 @@ var _default = /*#__PURE__*/function (_Controller) {
                   controlFactory: controlFactory
                 });
 
-                _context.next = 5;
-                return this._initMap();
-
-              case 5:
-                this._map = _context.sent;
+                this._map = this._initMap();
 
                 this._dispatchEvent('leafletjs:connected', {
                   map: this._map
                 });
 
-              case 7:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -317,7 +313,8 @@ var _default = /*#__PURE__*/function (_Controller) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                return _context2.abrupt("return", fetch(this.urlValue).then(function (response) {
+                _context2.next = 2;
+                return fetch(this.urlValue).then(function (response) {
                   return response.json();
                 }).then(function (settings) {
                   var _settings$controls;
@@ -330,11 +327,12 @@ var _default = /*#__PURE__*/function (_Controller) {
                     controlFactory[control.type](control.options, webmap);
                   });
                   return webmap;
-                })["catch"](function (error) {
-                  return console.log(error);
-                }));
+                });
 
-              case 1:
+              case 2:
+                return _context2.abrupt("return", _context2.sent);
+
+              case 3:
               case "end":
                 return _context2.stop();
             }

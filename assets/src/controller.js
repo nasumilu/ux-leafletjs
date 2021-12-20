@@ -30,12 +30,12 @@ export default class extends Controller {
         }
         
         this._dispatchEvent('leafletjs:connecting', { layerFactory: layerFactory, controlFactory: controlFactory });
-        this._map = await this._initMap();
+        this._map = this._initMap();
         this._dispatchEvent('leafletjs:connected', { map: this._map });
     }
     
     async _initMap() {
-        return fetch(this.urlValue)
+        return await fetch(this.urlValue)
             .then(response => response.json())
             .then(settings => {
                 const webmap = L.map(this.element, settings.options);
@@ -49,7 +49,7 @@ export default class extends Controller {
                 });
                 
                 return webmap;
-            }).catch(error => console.log(error));
+            });
     }
     
     _dispatchEvent(name, payload) {
