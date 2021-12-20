@@ -16,26 +16,17 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leafletjs;
+namespace Nasumilu\UX\Leafletjs\Factory;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Nasumilu\UX\Leafletjs\DependencyInjection\Compiler\{
-    LayerBuilderPass,
-    ControlBuilderPass
-};
+use Nasumilu\UX\Leafletjs\Factory\Builder\LayerBuilderInterface;
 
 /**
  *
+ * @author mlucas
  */
-class LeafletjsBundle extends Bundle
+interface LayerBuilderRegistry
 {
-
-    public function build(ContainerBuilder $container)
-    {
-        parent::build($container);
-        $container->addCompilerPass(new LayerBuilderPass());
-        $container->addCompilerPass(new ControlBuilderPass());
-    }
-
+    public function addBuilder(LayerBuilderInterface ...$layerBuilders): self;
+    
+    public function hasBuilder(LayerBuilderInterface $layerBuilder): bool;
 }

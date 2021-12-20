@@ -45,6 +45,7 @@ services:
             - '@Nasumilu\UX\Leafletjs\Factory\Builder\TileLayerBuilder'
             - '@Nasumilu\UX\Leafletjs\Factory\Builder\WMSLayerBuilder'
         
+    Nasumilu\UX\Leafletjs\Factory\LayerBuilderRegistry: '@Nasumilu\UX\Leafletjs\Factory\LayerFactory'
     Nasumilu\UX\Leafletjs\Factory\LayerFactoryInterface: '@Nasumilu\UX\Leafletjs\Factory\LayerFactory'
     ##
 
@@ -63,6 +64,8 @@ services:
             - '@Nasumilu\UX\Leafletjs\Factory\Builder\ScaleControlBuilder'
             - '@Nasumilu\UX\Leafletjs\Factory\Builder\ZoomControlBuilder'
             
+    
+    Nasumilu\UX\Leafletjs\Factory\ControlBuilderRegistry: '@Nasumilu\UX\Leafletjs\Factory\ControlFactory'
     Nasumilu\UX\Leafletjs\Factory\ControlFactoryInterface: '@Nasumilu\UX\Leafletjs\Factory\ControlFactory'
     ##
     

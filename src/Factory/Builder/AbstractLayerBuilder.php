@@ -75,20 +75,20 @@ abstract class AbstractLayerBuilder implements LayerBuilderInterface
     {
         $castToBool = OptionsNormalizer::closureFor('castToBool');
         $castToInt = OptionsNormalizer::closureFor('castToInt');
-        
+
         $optionsResolver->define('attribution')
                 ->allowedTypes('string')
                 ->info('The layers attribution describing its data and any legal obligations');
-        
+
         $optionsResolver->define('title')
                 ->allowedTypes('string')
                 ->info('A title to use un the Legend');
-        
+
         $optionsResolver->define('baseMap')
                 ->allowedTypes('bool', 'string')
                 ->normalize($castToBool)
                 ->info('Indicates whether the layer is a base map or an overlay');
-        
+
         $optionsResolver->define('legendOrder')
                 ->allowedTypes('int', 'string')
                 ->normalize($castToInt)
@@ -106,10 +106,17 @@ abstract class AbstractLayerBuilder implements LayerBuilderInterface
     {
         $layerOptions = $this->optionsResolver->resolve($options);
         return new Layer($this->type,
-                $name, 
-                $url, 
+                $name,
+                $url,
                 array_filter($layerOptions,
-                        static function ($value) { return !is_null($value); } ));
+                        static function ($value) {
+                            return !is_null($value);
+                        }));
+    }
+
+    public function __toString()
+    {
+        return "LayerBuilderInterface[{$this->type}]";
     }
 
 }

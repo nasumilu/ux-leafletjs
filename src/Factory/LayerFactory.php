@@ -23,7 +23,7 @@ use Nasumilu\UX\Leafletjs\Factory\Builder\LayerBuilderInterface;
 use InvalidArgumentException;
 /**
  */
-class LayerFactory implements LayerFactoryInterface
+class LayerFactory implements LayerFactoryInterface, LayerBuilderRegistry
 {
 
     /**
@@ -55,6 +55,11 @@ class LayerFactory implements LayerFactoryInterface
         $this->layerBuilders = array_merge($this->layerBuilders, $layerBuilders);
         $this->types = null;
         return $this;
+    }
+    
+    public function hasBuilder(LayerBuilderInterface $layerBuilder): bool
+    {
+        return false !== array_search($layerBuilder, $this->layerBuilders, true);
     }
     
     /**

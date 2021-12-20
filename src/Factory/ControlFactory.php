@@ -25,19 +25,19 @@ use InvalidArgumentException;
 /**
  * 
  */
-class ControlFactory implements ControlFactoryInterface
+class ControlFactory implements ControlFactoryInterface, ControlBuilderRegistry
 {
-    
+
     /**
      * @var array<ControlBuilderInterface>
      */
     private $controlBuilders;
-    
+
     /**
      * @var array<string>
      */
     private $types;
-    
+
     /**
      * 
      * @param ControlBuilderInterface $controlBuilders
@@ -46,7 +46,7 @@ class ControlFactory implements ControlFactoryInterface
     {
         $this->setBuilders($controlBuilders);
     }
-    
+
     /**
      * 
      * @param array $controlBuilders
@@ -57,7 +57,7 @@ class ControlFactory implements ControlFactoryInterface
         $this->controlBuilders = [];
         return $this->addBuilder(...$controlBuilders);
     }
-    
+
     /**
      * 
      * @param ControlBuilderInterface $controlBuilders
@@ -68,7 +68,12 @@ class ControlFactory implements ControlFactoryInterface
         $this->controlBuilders = array_merge($this->controlBuilders, $controlBuilders);
         return $this;
     }
-    
+
+    public function hasBuilder(ControlBuilderInterface $controlBuilder): bool
+    {
+        return false !== array_search($controlBuilder, $this->controlBuilders, true);
+    }
+
     /**
      * 
      * @return array
@@ -77,15 +82,17 @@ class ControlFactory implements ControlFactoryInterface
     {
         return $this->controlBuilders;
     }
-    
+
     public function getControlTypes(): array
     {
-        if(null == $this->types) {
-            $this->types = array_map(static function(ControlBuilderInterface $builder) { return $builder->getType(); }, $this->controlBuilders);
+        if (null == $this->types) {
+            $this->types = array_map(static function (ControlBuilderInterface $builder) {
+                return $builder->getType();
+            }, $this->controlBuilders);
         }
         return $this->types;
     }
-    
+
     /**
      * 
      * @param string $type
@@ -95,8 +102,8 @@ class ControlFactory implements ControlFactoryInterface
      */
     public function create(string $type, array $options = []): Control
     {
-        foreach($this->controlBuilders as $builder) {
-            if($builder->getType() === $type) {
+        foreach ($this->controlBuilders as $builder) {
+            if ($builder->getType() === $type) {
                 return $builder->build($options);
             }
         }

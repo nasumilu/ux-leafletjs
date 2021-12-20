@@ -79,5 +79,10 @@ abstract class AbstractControlBuilder implements ControlBuilderInterface
         $controlOptions = $this->optionsResolver->resolve($options);
         return new Control($this->type, $controlOptions);
     }
+    
+    public function __toString()
+    {
+        return "ControlBuilderInterface[{$this->type}]";
+    }
 
 }

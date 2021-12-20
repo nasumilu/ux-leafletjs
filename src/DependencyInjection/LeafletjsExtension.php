@@ -27,6 +27,8 @@ use Symfony\Component\DependencyInjection\Reference;
 use Nasumilu\UX\Leafletjs\Twig\LeafletjsExtension as LeafletTwigExtension;
 use Twig\Environment;
 use Symfony\Component\Routing\RouterInterface;
+use Nasumilu\UX\Leafletjs\Factory\Builder\LayerBuilderInterface;
+use Nasumilu\UX\Leafletjs\Factory\Builder\ControlBuilderInterface;
 
 /**
  * 
@@ -42,7 +44,7 @@ class LeafletjsExtension extends Extension
                 new FileLocator(__DIR__ . '/../../config')
         );
         $loader->load('services.yaml');
-        
+
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -55,13 +57,19 @@ class LeafletjsExtension extends Extension
                     ->addTag('twig.extension')
                     ->setPublic(false);
         }
-        
+
         $paths = $config['paths'] ?? ['%kernel.project_dir%/config/maps'];
-        
+
         $container->findDefinition('leafletjs.file_locator')
                 ->setArgument('$paths', $paths);
+
+        $container->registerForAutoconfiguration(ControlBuilderInterface::class)
+                ->addTag('leaflet.control_builder');
+
+        $container->registerForAutoconfiguration(LayerBuilderInterface::class)
+                ->addTag('leaflet.layer_builder');
     }
-    
+
     public function getAlias(): string
     {
         return 'leafletjs';
