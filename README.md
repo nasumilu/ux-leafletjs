@@ -32,7 +32,7 @@ If not using Symfony Flex then add the bundle to the applications **config/bundl
 ```php
 return [
     ...
-    Nasumilu\UX\Leaflet\LeafletBundle::class => ['all' => true],
+    Nasumilu\UX\Leafletjs\LeafletjsBundle::class => ['all' => true],
     ...
 ];
 ```
@@ -44,7 +44,7 @@ Next install the javascript packages by first updating your applications
     "controllers": {
         ...
         "@nasumilu/ux-leafletjs": {
-            "map": {
+            "leafletjs": {
                 "fetch": "eager",
                 "enabled": true
             }
@@ -52,7 +52,6 @@ Next install the javascript packages by first updating your applications
 
    }
 }
-
 ```
 
 Next install the @nasumilu/ux-leafletjs javascript dependency and build
@@ -69,10 +68,83 @@ $ npm install --force
 $ npm run build
 ```
 
+
 ## Usage
 
-Each map is created using a url which provides a JSON object. The JSON object
-is used to configure a web map.
+### Configure
+
+There are a couple of ways to configure the map. Probably the most straight forwards is to 
+use the `MapFactory` service. First, some quick bundle configurations:
+
+```yaml
+# config/packages/leafletjs.yaml
+leafletjs:
+   paths: ['%kernel.project_dir%/config/maps']
+```
+
+Next add a map definition file in the `%kernel.project_dir%/config/maps` directory:
+
+```yaml
+# %kernel.project_dir%/config/maps/test_map.yaml
+
+test_map:
+    zoom: 4
+    center: [29.54654, -85.654665]
+    maxBounds: [[71.386455, -64.565694],[17.681818, -179.147531]]
+    minZoom: 3
+    maxZoom: 18
+    layers:
+        # base map
+        esri_world_topo:
+           type: tile
+           url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
+           options:
+               baseLayer: true
+               title: 'ArcGIS World Topo'
+               attribution: 'Tiles &copy; <a href="https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer">ArcGIS</a>'
+        #base map
+        osm:
+            type: tile
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            options:
+                baseLayer: true
+                title: OpenStreetMap
+                attribution: '&copy; OpenStreetMap contributors'
+        # overlay
+        noaa_base_reflectivity:
+            type: wms
+            url: 'https://idpgis.ncep.noaa.gov/arcgis/services/NWS_Observations/radar_base_reflectivity/MapServer/WMSServer'
+            options:
+                title: 'NOAA Base Reflectivity'
+                transparent: true
+                format: image/png
+                attribution: 'NOAA National Weather Service'
+                layers:
+                    - [1, 'default']
+        #overlay
+        usgs_contours: 
+            type: wms
+            url: 'https://carto.nationalmap.gov/arcgis/services/contours/MapServer/WMSServer'
+            options:
+                title: 'USGS Contours'
+                transparent: true
+                format: image/png
+                attribution: ''
+                layers:
+                    - [1, 'default'] 
+                    - [2]
+                    - [3]
+                    - [4]
+                    - [5]
+                    - [6]
+                    - [7]
+                    - [8]
+                    - [9]
+                    - [10]
+    controls:
+        - { type: layers, options: { position: topright, collapsed: false } }
+        - { type: scale, options: { position: bottomleft, maxWidth: 300, metric: false } }
+```
 
 ```php
 
@@ -91,34 +163,24 @@ class MapController extends AbstractController {
     }
 
     /**
-     * @Route("/webmap", name="app.webmap")
+     * @Route("/webmap/{name}", name="app.webmap")
      */
-    public function map(): Response 
+    public function map(string $name): Response 
     {
-        $options = [
-            'center' => [29.54654, -85.654665],
-            'zoom' => 5,
-            'layers' => [
-                new TileLayer('osm',
-                    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', [
-                    'attribution' => '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                    'title' => 'Open Streets Map',
-                    'baseLayer' => true
-                ]);
-            ],
-            'controls' => [
-                new Scale([
-                    'position': Scale::POSITION_BOTTOM_RIGHT,
-                    'maxWidth': 300
-                ]),
-                new Legend([
-                    'position' => Legend::POSITION_TOP_RIGHT,
-                ])
-            ]
-        ];
-        
-        $map = new WebMap('dev_map', $options);
-        return $this->json($map, 200, [], [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]); 
+        $map = $this->get('map_factory')->load($name);
+        return $this->json($map);
+    }
+
+    protected function json($data, int $status = 200, array $headers = [], array $context = []): JsonResponse
+    {
+        return parent::json($data, $status, $headers, array_merge($context, [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]));
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            'map_factory' => '?'.MapFactoryInterface::class
+        ]);
     }
 
 }
@@ -130,8 +192,16 @@ In the template use the `webmap` function:
 {# templates/map/index.twig.html
 {% extends "base.html.twig" %}
 {% block body %}
-    {{ webmap({ 'route': 'app.webmap' } ) }}
+    {{ webmap({ 'route': 'app.web_map', 'route_args': { 'name': 'test_map' } } ) }}
 {% endblock %}
 ```
 
 ![Sample Webmap](./docs/images/ux-leafletjs_screenshot.png)
+
+## Learn More
+
+- XML map definition
+- PHP map definition
+- JSON map definition
+- Adding custom layers
+- Adding custom controls
