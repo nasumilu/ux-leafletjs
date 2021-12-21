@@ -19,7 +19,7 @@ import geoJsonLayerFactory from './geojson-layer-factory';
 import wmsLayerFactory from './wms-layer-factory';
 
 export const layerFactory = {
-    tile: async (args, webmap) => await L.tileLayer(args.url, args.options).addTo(webmap),
-    geojson: async (args, webmap) => await geoJsonLayerFactory(args.url, args.options).addTo(webmap),
-    wms: async (args, webmap) => await wmsLayerFactory(args.url, args.options).addTo(webmap)
+    tile: async (args, webmap) => await L.tileLayer(args.url, Object.assign({name: args.name}, args.options)).addTo(webmap),
+    geojson: async (args, webmap) => await geoJsonLayerFactory(args.url, Object.assign({name: args.name}, args.options)).addTo(webmap),
+    wms: async (args, webmap) => await wmsLayerFactory(args.url, Object.assign({name: args.name}, args.options)).addTo(webmap)
 };

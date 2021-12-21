@@ -77,7 +77,9 @@ var layerFactory = {
           switch (_context.prev = _context.next) {
             case 0:
               _context.next = 2;
-              return L$1.tileLayer(args.url, args.options).addTo(webmap);
+              return L$1.tileLayer(args.url, Object.assign({
+                name: args.name
+              }, args.options)).addTo(webmap);
 
             case 2:
               return _context.abrupt("return", _context.sent);
@@ -103,7 +105,9 @@ var layerFactory = {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return geoJsonLayerFactory(args.url, args.options).addTo(webmap);
+              return geoJsonLayerFactory(args.url, Object.assign({
+                name: args.name
+              }, args.options)).addTo(webmap);
 
             case 2:
               return _context2.abrupt("return", _context2.sent);
@@ -129,7 +133,9 @@ var layerFactory = {
           switch (_context3.prev = _context3.next) {
             case 0:
               _context3.next = 2;
-              return wmsLayerFactory(args.url, args.options).addTo(webmap);
+              return wmsLayerFactory(args.url, Object.assign({
+                name: args.name
+              }, args.options)).addTo(webmap);
 
             case 2:
               return _context3.abrupt("return", _context3.sent);
@@ -326,7 +332,7 @@ var _default = /*#__PURE__*/function (_Controller) {
 
                   var webmap = L.map(_this.element, settings.options);
                   Object.values(settings.layers || {}).forEach(function (layer) {
-                    layerFactory[layer.type](layer, webmap).options.name = layer.name;
+                    layerFactory[layer.type](layer, webmap);
                   });
                   (_settings$controls = settings.controls) === null || _settings$controls === void 0 ? void 0 : _settings$controls.forEach(function (control) {
                     controlFactory[control.type](control.options, webmap);
