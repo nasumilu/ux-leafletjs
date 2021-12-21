@@ -326,7 +326,7 @@ var _default = /*#__PURE__*/function (_Controller) {
 
                   var webmap = L.map(_this.element, settings.options);
                   Object.values(settings.layers || {}).forEach(function (layer) {
-                    layerFactory[layer.type](layer, webmap).name = layer.name;
+                    layerFactory[layer.type](layer, webmap).options.name = layer.name;
                   });
                   (_settings$controls = settings.controls) === null || _settings$controls === void 0 ? void 0 : _settings$controls.forEach(function (control) {
                     controlFactory[control.type](control.options, webmap);

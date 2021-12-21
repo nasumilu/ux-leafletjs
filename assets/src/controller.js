@@ -41,7 +41,7 @@ export default class extends Controller {
                 const webmap = L.map(this.element, settings.options);
               
                 Object.values(settings.layers || {}).forEach(layer => {
-                    layerFactory[layer.type](layer, webmap).name = layer.name;
+                    layerFactory[layer.type](layer, webmap).options.name = layer.name;
                 });
                 
                 settings.controls?.forEach(control => {
