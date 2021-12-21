@@ -19,6 +19,10 @@ services:
     Nasumilu\UX\Leafletjs\Factory\Loader\PhpMapLoader:
         arguments:
             $locator: '@leafletjs.file_locator'
+            
+    Nasumilu\UX\Leafletjs\Factory\Loader\JsonMapLoader:
+        arguments:
+            $locator: '@leafletjs.file_locator'
     
     leafletjs.loader_resolver:
         class: Symfony\Component\Config\Loader\LoaderResolver
@@ -27,6 +31,7 @@ services:
                 - '@Nasumilu\UX\Leafletjs\Factory\Loader\XmlMapLoader'
                 - '@Nasumilu\UX\Leafletjs\Factory\Loader\YamlMapLoader'
                 - '@Nasumilu\UX\Leafletjs\Factory\Loader\PhpMapLoader'
+                - '@Nasumilu\UX\Leafletjs\Factory\Loader\JsonMapLoader'
     ##
     
     # Layer Builders
