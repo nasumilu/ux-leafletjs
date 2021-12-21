@@ -200,6 +200,7 @@ In the template use the `webmap` function:
 
 ## Learn More
 
+- [YAML map definition](./docs/yaml_map.md)
 - [XML map definition](./docs/xml_map.md)
 - [PHP map definition](./docs/php_map.md)
 - [JSON map definition](./docs/json_map.md)
