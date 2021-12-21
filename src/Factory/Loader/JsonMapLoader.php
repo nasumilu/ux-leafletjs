@@ -30,7 +30,7 @@ class JsonMapLoader extends FileLoader
     {
         $name = pathinfo($resource, PATHINFO_FILENAME);
         $file = $this->locator->locate($resource);
-        $options = json_encode(file_get_contents($file), true);
+        $options = json_decode(file_get_contents($file), true);
         return $options[$name];
     }
 
