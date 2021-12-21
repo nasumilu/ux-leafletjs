@@ -59,7 +59,7 @@ class XmlMapLoader extends FileLoader
     private function parseControls(SimpleXMLElement $webmap): array
     {
         $controls = [];
-        foreach($webmap->controls->control as $control) {
+        foreach($webmap->controls->control ?? [] as $control) {
             $type = (string) $control['type'];
             $controls[] = [
                 'type' => $type,
@@ -77,7 +77,7 @@ class XmlMapLoader extends FileLoader
     private function parseLayers(SimpleXMLElement $webmap): array
     {
         $layers = [];
-        foreach($webmap->layers->layer as $layer) {
+        foreach($webmap->layers->layer ?? [] as $layer) {
             $type = (string) $layer['type'];
             $url = (string) $layer['url'];
             $name = (string) $layer['name'];
@@ -109,7 +109,7 @@ class XmlMapLoader extends FileLoader
     private function parseWmsLayerOptions(SimpleXMLElement $wmsLayer): array
     {
         $wmsLayers = [];
-        foreach($wmsLayer->wms_layers->wms_layer as $layer) {
+        foreach($wmsLayer->wms_layers->wms_layer ?? [] as $layer) {
             $wmsLayers[] = array_filter([(string) $layer['name'], (string)$layer['style'] ?? null]);
         }
         return array_merge($this->parseOptions($wmsLayer->option), ['layers' => $wmsLayers]);
