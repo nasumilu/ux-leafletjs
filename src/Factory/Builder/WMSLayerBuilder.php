@@ -20,6 +20,7 @@ namespace Nasumilu\UX\Leafletjs\Factory\Builder;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
+use Nasumilu\UX\Leafletjs\Factory\OptionsNormalizer;
 
 /**
  * 
@@ -45,6 +46,8 @@ class WMSLayerBuilder extends TileLayerBuilder
     {
         parent::configureOptions($optionsResolver);
         
+        $castToBool = OptionsNormalizer::closureFor('castToBool');
+        
         $optionsResolver->define('layers')
                 ->required()
                 ->allowedTypes('array')
@@ -63,7 +66,8 @@ class WMSLayerBuilder extends TileLayerBuilder
                 ->info('The georeferenced image mime-type');
         
         $optionsResolver->define('transparent')
-                ->allowedTypes('bool')
+                ->allowedTypes('bool', 'string')
+                ->normalize($castToBool)
                 ->info('If true, the WMS service will return images with '
                         . 'transparency.');
        
@@ -73,7 +77,8 @@ class WMSLayerBuilder extends TileLayerBuilder
                 ->info('Version of the WMS service to use');
         
         $optionsResolver->define('uppercase')
-                ->allowedTypes('bool')
+                ->allowedTypes('bool', 'string')
+                ->normalize($castToBool)
                 ->info('If true, WMS request parameter keys will be uppercase');
        
     }
