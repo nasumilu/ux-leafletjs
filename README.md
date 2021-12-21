@@ -200,8 +200,6 @@ In the template use the `webmap` function:
 
 ## Learn More
 
-- XML map definition
-- PHP map definition
-- JSON map definition
-- Adding custom layers
-- Adding custom controls
+- [XML map definition](./docs/xml_map.md)
+- [PHP map definition](./docs/php_map.md)
+- [JSON map definition](./docs/json_map.md)
