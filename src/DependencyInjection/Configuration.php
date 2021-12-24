@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2021 mlucas.
+ * Copyright 2021 Michael Lucas.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,23 +22,28 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**
- * 
+ * Configuration for LeafletjsBundle
  */
 class Configuration implements ConfigurationInterface
 {
 
+    /**
+     * {@inheritDoc}
+     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $root = new TreeBuilder('leafletjs');
 
         $root->getRootNode()
-                    ->fixXmlConfig('path')
-                    ->children()
-                        ->arrayNode('paths')
-                            ->scalarPrototype()->end()
-                        ->end()
+                ->fixXmlConfig('path')
+                ->children()
+                    ->arrayNode('paths')
+                        ->treatNullLike([])
+                        ->scalarPrototype()->end()
+                        ->defaultValue(['%kernel.project_dir%/config/maps'])
                     ->end()
-                ->end();
+                ->end()
+            ->end();
 
         return $root;
     }
