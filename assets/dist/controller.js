@@ -285,18 +285,16 @@ var _default = /*#__PURE__*/function (_Controller) {
                 throw new Error('Url value not found!');
 
               case 2:
-                this._dispatchEvent('leafletjs:connecting', {
+                this.dispatch('leafletjs:connecting', {
                   layerFactory: layerFactory,
                   controlFactory: controlFactory
                 });
-
                 _context.next = 5;
                 return this._initMap();
 
               case 5:
                 map = _context.sent;
-
-                this._dispatchEvent('leafletjs:connected', {
+                this.dispatch('leafletjs:connected', {
                   map: map
                 });
 
@@ -318,32 +316,33 @@ var _default = /*#__PURE__*/function (_Controller) {
     key: "_initMap",
     value: function () {
       var _initMap2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
-        var _this = this;
+        var _settings$controls;
 
+        var response, settings, webmap;
         return _regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return fetch(this.urlValue).then(function (response) {
-                  return response.json();
-                }).then(function (settings) {
-                  var _settings$controls;
-
-                  var webmap = L.map(_this.element, settings.options);
-                  Object.values(settings.layers || {}).forEach(function (layer) {
-                    layerFactory[layer.type](layer, webmap);
-                  });
-                  (_settings$controls = settings.controls) === null || _settings$controls === void 0 ? void 0 : _settings$controls.forEach(function (control) {
-                    controlFactory[control.type](control.options, webmap);
-                  });
-                  return webmap;
-                });
+                return fetch(this.urlValue);
 
               case 2:
-                return _context2.abrupt("return", _context2.sent);
+                response = _context2.sent;
+                _context2.next = 5;
+                return response.json();
 
-              case 3:
+              case 5:
+                settings = _context2.sent;
+                webmap = L.map(this.element, settings.options);
+                Object.values(settings.layers || {}).forEach(function (layer) {
+                  layerFactory[layer.type](layer, webmap);
+                });
+                (_settings$controls = settings.controls) === null || _settings$controls === void 0 ? void 0 : _settings$controls.forEach(function (control) {
+                  controlFactory[control.type](control.options, webmap);
+                });
+                return _context2.abrupt("return", webmap);
+
+              case 10:
               case "end":
                 return _context2.stop();
             }
@@ -357,13 +356,6 @@ var _default = /*#__PURE__*/function (_Controller) {
 
       return _initMap;
     }()
-  }, {
-    key: "_dispatchEvent",
-    value: function _dispatchEvent(name, payload) {
-      this.element.dispatchEvent(new CustomEvent(name, {
-        detail: payload
-      }));
-    }
   }]);
 
   return _default;

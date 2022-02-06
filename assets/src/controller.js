@@ -29,30 +29,24 @@ export default class extends Controller {
             throw new Error('Url value not found!');
         }
         
-        this._dispatchEvent('leafletjs:connecting', { layerFactory: layerFactory, controlFactory: controlFactory });
+        this.dispatch('leafletjs:connecting', { layerFactory: layerFactory, controlFactory: controlFactory });
         const map = await this._initMap();
-        this._dispatchEvent('leafletjs:connected', { map: map });
+        this.dispatch('leafletjs:connected', { map: map });
     }
     
     async _initMap() {
-        return await fetch(this.urlValue)
-            .then(response => response.json())
-            .then(settings => {
-                const webmap = L.map(this.element, settings.options);
+        const response = await fetch(this.urlValue)
+        const settings = await response.json();
+        const webmap = L.map(this.element, settings.options);
               
-                Object.values(settings.layers || {}).forEach(layer => {
-                    layerFactory[layer.type](layer, webmap);
-                });
+        Object.values(settings.layers || {}).forEach(layer => {
+            layerFactory[layer.type](layer, webmap);
+        });
                 
-                settings.controls?.forEach(control => {
-                    controlFactory[control.type](control.options, webmap);
-                });
+        settings.controls?.forEach(control => {
+            controlFactory[control.type](control.options, webmap);
+        });
                 
-                return webmap;
-            });
-    }
-    
-    _dispatchEvent(name, payload) {
-        this.element.dispatchEvent(new CustomEvent(name, { detail: payload }));
+        return webmap;
     }
 }
