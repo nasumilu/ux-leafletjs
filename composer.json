@@ -48,12 +48,6 @@
         "thanks": {
             "name": "nasumilu/ux-leafletjs",
             "url": "https://github.com/nasumilu/ux-leafletjs"
-        },
-        "symfony": {
-            "endpoint": [
-                "https://raw.githubusercontent.com/nasumilu/flex-recipes/main/index.json",
-                "flex://defaults"
-            ]
         }
     },
     "minimum-stability": "dev"
