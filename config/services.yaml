@@ -82,7 +82,7 @@ services:
             $controlFactory: '@Nasumilu\UX\Leafletjs\Factory\ControlFactoryInterface'
             $router: '@Symfony\Component\Routing\RouterInterface'
     
-    Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface:
+    Nasumilu\UX\Leafletjs\Factory\MapLoaderInterface:
         public: true
         alias: Nasumilu\UX\Leafletjs\Factory\MapFactory
     ## Map Factory
@@ -90,7 +90,7 @@ services:
     # Controller Service
     Nasumilu\UX\Leafletjs\Controller\MapController:
         arguments:
-            $mapFactory: '@Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface'
+            $mapLoader: '@Nasumilu\UX\Leafletjs\Factory\MapLoaderInterface'
         calls:
             - setContainer: ['@service_container']
         tags: ['controller.service_arguments']

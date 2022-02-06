@@ -23,7 +23,7 @@ use Nasumilu\UX\Leafletjs\Model\Map;
 /**
  * 
  */
-interface MapLoaderInterface
+interface MapLoaderInterface extends MapFactoryInterface
 {
     
     

@@ -34,7 +34,7 @@ use function in_array;
 /**
  * 
  */
-class MapFactory implements MapFactoryInterface, MapLoaderInterface
+class MapFactory implements MapLoaderInterface
 {
 
     /**

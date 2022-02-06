@@ -19,7 +19,7 @@
 namespace Nasumilu\UX\Leafletjs\Tests\Kernel;
 
 use PHPUnit\Framework\TestCase;
-use Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface;
+use Nasumilu\UX\Leafletjs\Factory\MapLoaderInterface;
 
 /**
  * Description of LeafletjsBundleTest
@@ -38,7 +38,7 @@ class LeafletjsBundleTest extends TestCase
         $kernel->boot();
         $this->assertArrayHasKey('LeafletjsBundle', $kernel->getBundles());
         
-        $factory = $kernel->getContainer()->get(MapFactoryInterface::class);
+        $factory = $kernel->getContainer()->get(MapLoaderInterface::class);
     }
         
 }

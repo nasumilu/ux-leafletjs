@@ -19,7 +19,7 @@
 namespace Nasumilu\UX\Leafletjs\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface;
+use Nasumilu\UX\Leafletjs\Factory\MapLoaderInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,16 +29,16 @@ use Symfony\Component\HttpFoundation\Response;
 class MapController extends AbstractController
 {
 
-    private MapFactoryInterface $mapFactory;
+    private MapLoaderInterface $mapLoader;
 
-    public function __construct(MapFactoryInterface $mapFactory)
+    public function __construct(MapLoaderInterface $mapLoader)
     {
-        $this->mapFactory = $mapFactory;
+        $this->mapLoader = $mapLoader;
     }
 
     public function webmap(string $name): Response
     {
-        $map = $this->mapFactory->load($name);
+        $map = $this->mapLoader->load($name);
         return $this->json($map, 
                 200, 
                 [], 

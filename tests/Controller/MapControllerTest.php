@@ -37,7 +37,7 @@ class MapControllerTest extends WebTestCase
         // Request a specific page
     
         $crawler = $client->request('GET', '/webmap/my_map');
-
+        
         // Validate a successful response and some content
         $this->assertResponseIsSuccessful();
     }
