@@ -41,8 +41,8 @@
         "symfony/flex": "<1.13",
         "symfony/webpack-encore-bundle": "<1.11"
     },
-    "suggest": {
-        "symfony/http-foundation": "To use the bundles default map controller."
+    "config": {
+        "sort-packages": true
     },
     "extra": {
         "thanks": {
