@@ -18,31 +18,37 @@
 
 namespace Nasumilu\UX\Leafletjs\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Nasumilu\UX\Leafletjs\Factory\MapLoaderInterface;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
+use Nasumilu\UX\Leafletjs\Model\Map;
 
 /**
  * Controller used to serve the map configuration files.
  */
-class MapController extends AbstractController
+class MapController
 {
 
     private MapLoaderInterface $mapLoader;
+    private SerializerInterface $serializer;
 
-    public function __construct(MapLoaderInterface $mapLoader)
+    public function __construct(MapLoaderInterface $mapLoader,
+            SerializerInterface $serializer)
     {
         $this->mapLoader = $mapLoader;
+        $this->serializer = $serializer;
     }
 
-    public function webmap(string $name): Response
+    public function webmap(string $name): JsonResponse
     {
-        $map = $this->mapLoader->load($name);
-        return $this->json($map, 
-                200, 
-                [], 
-                [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]);
+        return $this->json($this->mapLoader->load($name));
+    }
+    
+    private function json(Map $map): JsonResponse 
+    {
+        $json = $this->serializer->serialize($map, 'json', [AbstractObjectNormalizer::SKIP_NULL_VALUES]);
+        return new JsonResponse($json, 200, [], true);
     }
 
 }
