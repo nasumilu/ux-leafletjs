@@ -29,15 +29,19 @@
     },
     "require-dev": {
         "symfony/framework-bundle": "^5.3|^6.0",
-        "symfony/phpunit-bridge": "^5.3|^6.0",
         "symfony/twig-bundle": "^5.3|^6.0",
-        "symfony/var-dumper": "^5.3|^6.0",
         "symfony/webpack-encore-bundle": "^1.11",
-        "symfony/yaml": "^5.3|^6.0"
+        "symfony/yaml": "^5.3|^6.0",
+        "symfony/http-foundation": "^5.3|^6.0",
+        "symfony/routing": "^5.3|^6.0",
+        "symfony/test-pack": "^v1.0"
     },
-        "conflict": {
+    "conflict": {
         "symfony/flex": "<1.13",
         "symfony/webpack-encore-bundle": "<1.11"
+    },
+    "suggest": {
+        "symfony/http-foundation": "To use the bundles default map controller."
     },
     "extra": {
         "thanks": {

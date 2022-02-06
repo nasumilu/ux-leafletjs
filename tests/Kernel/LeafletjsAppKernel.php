@@ -23,6 +23,9 @@ use Nasumilu\UX\Leafletjs\LeafletjsBundle;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Nasumilu\UX\Leafletjs\Controller\MapController;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 /**
@@ -36,47 +39,11 @@ use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 class LeafletjsAppKernel extends Kernel
 {
 
-    public function registerBundles(): iterable
+    use MicroKernelTrait;
+
+    public function getProjectDir(): string
     {
-        return [new FrameworkBundle(), new LeafletjsBundle()];
-    }
-
-    public function registerContainerConfiguration(LoaderInterface $loader)
-    {
-        $loader->load(function (ContainerBuilder $container) {
-            $container->loadFromExtension('framework', [
-                'secret' => '$ecret',
-                'test' => true,
-                'router' => [ 
-                    'utf8' => true, 
-                    'resource' => 'kernel::loadRoutes', 
-                    'type' => 'service'
-                ]
-            ]);
-            
-            $container->loadFromExtension('leafletjs', ['paths' => [__DIR__.'/../fixtures']]);
-        });
-    }
-
-    public function getCacheDir(): string
-    {
-        return $this->tmpDir('cache');
-    }
-
-    public function getLogDir(): string
-    {
-        return $this->tmpDir('logs');
-    }
-
-    private function tmpDir(string $type): string
-    {
-        $dir = sys_get_temp_dir() . '/leafletjs_bundle/' . uniqid($type . '_', true);
-
-        if (!file_exists($dir)) {
-            mkdir($dir, 0777, true);
-        }
-
-        return $dir;
+        return __DIR__.'/../';
     }
 
 }

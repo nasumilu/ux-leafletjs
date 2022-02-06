@@ -53,7 +53,8 @@ class XmlMapLoader extends FileLoader
      */
     public function supports($resource, $type = null): bool
     {
-        return is_string($resource) && 'xml' === pathinfo($resource, PATHINFO_EXTENSION);
+        return 'xml' === $type 
+                || (is_string($resource) && 'xml' === pathinfo($resource, PATHINFO_EXTENSION));
     }
     
     private function parseControls(SimpleXMLElement $webmap): array

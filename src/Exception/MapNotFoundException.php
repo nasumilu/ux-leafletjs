@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2021 Michael Lucas.
+ * Copyright 2022 mlucas.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,14 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leafletjs\Factory;
-
-use Nasumilu\UX\Leafletjs\Model\Map;
+namespace Nasumilu\UX\Leafletjs\Exception;
 
 /**
- * 
+ * Description of MapNotFoundException
+ *
+ * @author mlucas
  */
-interface MapLoaderInterface
+class MapNotFoundException extends \RuntimeException
 {
-    
-    
-    public function load(string $name): Map;
-    
+
 }

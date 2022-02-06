@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2021 mlucas.
+ * Copyright 2021 Michael Lucas.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,30 @@
  * limitations under the License.
  */
 
-namespace Nasumilu\UX\Leafletjs\Factory\Loader;
+namespace Nasumilu\UX\Leafletjs\Tests\Controller;
 
-use Symfony\Component\Config\Loader\FileLoader;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  * 
  */
-class PhpMapLoader extends FileLoader
+class MapControllerTest extends WebTestCase
 {
-    
-    public function load($resource, $type = null): array
-    {
-        $name = pathinfo($resource, PATHINFO_FILENAME);
-        $file = $this->locator->locate($resource);
-        $options = require $file;
-        return $options[$name];
-    }
 
-    public function supports($resource, $type = null): bool
+    /**
+     * @test
+     * @return void
+     */
+    public function webmap(): void
     {
-        return 'php' === $type
-                || (is_string($resource) && 'php' === pathinfo($resource, PATHINFO_EXTENSION));
+        $client = static::createClient();
+
+        // Request a specific page
+    
+        $crawler = $client->request('GET', '/webmap/my_map');
+
+        // Validate a successful response and some content
+        $this->assertResponseIsSuccessful();
     }
 
 }

@@ -27,6 +27,8 @@ use Symfony\Component\Yaml\Yaml;
 class YamlMapLoader extends FileLoader
 {
     
+    private const EXTENSIONS = ['yaml', 'yml'];
+    
     /**
      * {@inheritDoc}
      */
@@ -44,7 +46,16 @@ class YamlMapLoader extends FileLoader
      */
     public function supports($resource, $type = null): bool
     {
-        return is_string($resource) && 'yaml' === pathinfo($resource, PATHINFO_EXTENSION);
+        if(in_array($type, self::EXTENSIONS, true)) {
+            return true;
+        }
+        
+        if(!is_string($resource)) {
+            return false;
+        }
+        $extension =  pathinfo($resource, PATHINFO_EXTENSION);
+        
+        return in_array($extension, self::EXTENSIONS, true);
     }
 
 }

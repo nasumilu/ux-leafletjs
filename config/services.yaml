@@ -1,9 +1,9 @@
+#
+#      Author: Michael Lucas <nasumilu@gmail.com>
+# Description: leafletjs service configuration
+#
 services:
     
-    
-     #'%env(string:APP_ENV)%'
-     
-     
     # LoaderResolverInterface
     leafletjs.file_locator:
         class: Symfony\Component\Config\FileLocator
@@ -32,7 +32,7 @@ services:
                 - '@Nasumilu\UX\Leafletjs\Factory\Loader\YamlMapLoader'
                 - '@Nasumilu\UX\Leafletjs\Factory\Loader\PhpMapLoader'
                 - '@Nasumilu\UX\Leafletjs\Factory\Loader\JsonMapLoader'
-    ##
+    ## LoaderResolverInterface
     
     # Layer Builders
     Nasumilu\UX\Leafletjs\Factory\Builder\TileLayerBuilder:
@@ -42,7 +42,7 @@ services:
     Nasumilu\UX\Leafletjs\Factory\Builder\WMSLayerBuilder:
         arguments:
             $router: '@Symfony\Component\Routing\RouterInterface'
-    ##
+    ## Layer Builders
     
     # Layer Factory
     Nasumilu\UX\Leafletjs\Factory\LayerFactory:
@@ -52,14 +52,14 @@ services:
         
     Nasumilu\UX\Leafletjs\Factory\LayerBuilderRegistry: '@Nasumilu\UX\Leafletjs\Factory\LayerFactory'
     Nasumilu\UX\Leafletjs\Factory\LayerFactoryInterface: '@Nasumilu\UX\Leafletjs\Factory\LayerFactory'
-    ##
+    ## Layer Factory
 
     # Control Builders
     Nasumilu\UX\Leafletjs\Factory\Builder\AttributionControlBuilder: ~
     Nasumilu\UX\Leafletjs\Factory\Builder\LayersControlBuilder: ~
     Nasumilu\UX\Leafletjs\Factory\Builder\ScaleControlBuilder: ~
     Nasumilu\UX\Leafletjs\Factory\Builder\ZoomControlBuilder: ~
-    ##
+    ## Control Builders
       
     # Control Factory
     Nasumilu\UX\Leafletjs\Factory\ControlFactory:
@@ -72,7 +72,7 @@ services:
     
     Nasumilu\UX\Leafletjs\Factory\ControlBuilderRegistry: '@Nasumilu\UX\Leafletjs\Factory\ControlFactory'
     Nasumilu\UX\Leafletjs\Factory\ControlFactoryInterface: '@Nasumilu\UX\Leafletjs\Factory\ControlFactory'
-    ##
+    ## Control Factory
     
     # Map Factory
     Nasumilu\UX\Leafletjs\Factory\MapFactory:
@@ -82,8 +82,17 @@ services:
             $controlFactory: '@Nasumilu\UX\Leafletjs\Factory\ControlFactoryInterface'
             $router: '@Symfony\Component\Routing\RouterInterface'
     
-    Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface: 
+    Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface:
         public: true
         alias: Nasumilu\UX\Leafletjs\Factory\MapFactory
-    ##
+    ## Map Factory
+    
+    # Controller Service
+    Nasumilu\UX\Leafletjs\Controller\MapController:
+        arguments:
+            $mapFactory: '@Nasumilu\UX\Leafletjs\Factory\MapFactoryInterface'
+        calls:
+            - setContainer: ['@service_container']
+        tags: ['controller.service_arguments']
+    ## Controller Service
             

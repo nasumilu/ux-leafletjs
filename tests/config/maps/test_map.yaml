@@ -1,0 +1,27 @@
+test_map:
+    zoom: 5
+    center: [29.54654, -85.654665]
+    layers:
+        layer_one:
+            type: tile
+            url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+            options:
+                legendOrder: 1
+                baseLayer: true
+                bounds: [[-14.54654, -60.654665], [-29.54654, 85.654665]]
+        layer_two:
+            type: wms
+            url: 'https://map.nasumilu.com/northwood/wms'
+            options:
+                legendOrder: 1
+                layers:
+                    - ['northwood:boundary_perimeter', 'northwood:PerimeterStyle']
+                    - ['northwood:boundary']
+                    - ['northwood:tree', 'northwood:TreeStyle']
+                    - ['northwood:trail', 'northwood:TrailStyle']
+                    - ['northwood:natural_community', 'northwood:NaturalCommunityStyle']
+    controls:
+        - { type: zoom, options: { position: topright } }
+        - { type: layers, options: { position: topleft, collapsed: false } }
+        - { type: scale, options: { position: bottomleft, maxWidth: 300, metric: false } }
+        - { type: attribution, options: { position: bottomright, prefix: nasumilu.com } }

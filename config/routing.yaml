@@ -1,0 +1,4 @@
+leafletjs.webmap:
+    path: /webmap/{name}
+    controller: Nasumilu\UX\Leafletjs\Controller\MapController::webmap
+    methods: GET

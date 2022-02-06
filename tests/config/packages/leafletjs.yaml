@@ -1,0 +1,4 @@
+leafletjs:
+    path: 
+        - '%kernel.project_dir%/config/maps'
+        - '%kernel.project_dir%/fixtures'

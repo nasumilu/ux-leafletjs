@@ -26,6 +26,7 @@ use Symfony\Component\Config\Loader\DelegatingLoader;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Nasumilu\UX\Leafletjs\Model\Map;
+use Nasumilu\UX\Leafletjs\Exception\MapNotFoundException;
 use function array_filter;
 use function is_null;
 use function in_array;
@@ -37,10 +38,10 @@ class MapFactory implements MapFactoryInterface, MapLoaderInterface
 {
 
     /**
-     * @var LoaderInterface
+     * @var LoaderResolverInterface
      */
     private $loader;
-    
+
     /**
      * @var OptionsResolver
      */
@@ -67,8 +68,8 @@ class MapFactory implements MapFactoryInterface, MapLoaderInterface
      * @param RouterInterface $router
      */
     public function __construct(LoaderResolverInterface $loaderResolver,
-            LayerFactoryInterface $layerFactory, 
-            ControlFactoryInterface $controlFactory, 
+            LayerFactoryInterface $layerFactory,
+            ControlFactoryInterface $controlFactory,
             RouterInterface $router)
     {
         $this->loader = new DelegatingLoader($loaderResolver);
@@ -78,7 +79,7 @@ class MapFactory implements MapFactoryInterface, MapLoaderInterface
         $this->optionsResolver = new OptionsResolver();
         $this->configureOptions($this->optionsResolver);
     }
-    
+
     /**
      * 
      * @return LoaderInterface
@@ -87,7 +88,7 @@ class MapFactory implements MapFactoryInterface, MapLoaderInterface
     {
         return $this->loader;
     }
-    
+
     /**
      * 
      * @return LayerFactoryInterface
@@ -96,7 +97,7 @@ class MapFactory implements MapFactoryInterface, MapLoaderInterface
     {
         return $this->layerFactory;
     }
-    
+
     /**
      * 
      * @return ControlFactoryInterface
@@ -105,7 +106,7 @@ class MapFactory implements MapFactoryInterface, MapLoaderInterface
     {
         return $this->controlFactory;
     }
-    
+
     /**
      * 
      * @return RouterInterface
@@ -473,10 +474,25 @@ class MapFactory implements MapFactoryInterface, MapLoaderInterface
                     return !is_null($value);
                 }));
     }
-    
-    public function load(string $name, string $format = 'yaml'): Map
+
+    private function loadMapDefinitionFile(string $name): ?array
     {
-        $config = $this->loader->load("$name.$format");
+        foreach (['yaml', 'json', 'xml', 'php'] as $format) {
+            try {
+                return $this->loader->load("$name.$format");
+            } catch (\Exception $ex) {
+                
+            }
+        }
+        return null;
+    }
+
+    public function load(string $name): Map
+    {
+        
+        if(null === $config = $this->loadMapDefinitionFile($name)) {
+            throw new MapNotFoundException("Unable to find map $name!"); 
+        }
         return $this->create($name, $config);
     }
 

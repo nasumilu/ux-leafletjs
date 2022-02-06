@@ -36,6 +36,10 @@ class JsonMapLoader extends FileLoader
 
     public function supports($resource, $type = null): bool
     {
+        if('json' === $type) {
+            return true;
+        }
+        
         return is_string($resource) && 'json' === pathinfo($resource, PATHINFO_EXTENSION);
     }
 

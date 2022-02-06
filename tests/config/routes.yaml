@@ -1,0 +1,6 @@
+kernel:
+    resource: ../Kernel/LeafletjsAppKernel.php
+    type: annotation
+    
+leafletjs:
+    resource: '../../config/routing.yaml'
