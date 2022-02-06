@@ -2,7 +2,7 @@
     "name": "@nasumilu/ux-leafletjs",
     "description": "Leflet integration for Symfony",
     "license": "Apache-2.0",
-    "version": "0.0.1",
+    "version": "1.1.0",
     "main": "dist/controller.js",
     "module": "dist/controller.js",
     "symfony": {
