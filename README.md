@@ -5,25 +5,10 @@ This is a Symfony UX -> lealfet.js integration component.
 
 ## Install
 
-During development install using composer is only possible if you add the git
-repository. Upon the first release a packagis and flex recipe will easy the pain
-of installing this component. Until then this is the process required:
-
-composer.json
-```json
-{
-    "repositories" [
-        {
-            "type": "vcs",
-            "url": "https://github.com/nasumilu/ux-leafletjs"
-        }
-    ]
-}
-```
-
+Install using Composer
 
 ```sh
-$ composer require nasuilu/ux-leafletjs:dev-main
+$ composer require nasuilu/ux-leafletjs
 ```
 
 ## Setup
@@ -31,9 +16,7 @@ $ composer require nasuilu/ux-leafletjs:dev-main
 If not using Symfony Flex then add the bundle to the applications **config/bundles.php**
 ```php
 return [
-    ...
     Nasumilu\UX\Leafletjs\LeafletjsBundle::class => ['all' => true],
-    ...
 ];
 ```
 
@@ -42,16 +25,20 @@ Next install the javascript packages by first updating your applications
 ```json
 {
     "controllers": {
-        ...
         "@nasumilu/ux-leafletjs": {
             "leafletjs": {
                 "fetch": "eager",
                 "enabled": true
             }
-        }, ...
-
+        },
    }
 }
+```
+Add the following to the **package.json**
+```json
+    "devDependencies": {
+        "@nasumilu/ux-leafletjs": "file:vendor/nasumilu/ux-leafletjs/assets",
+    }
 ```
 
 Next install the @nasumilu/ux-leafletjs javascript dependency and build
@@ -79,13 +66,28 @@ use the `MapFactory` service. First, some quick bundle configurations:
 ```yaml
 # config/packages/leafletjs.yaml
 leafletjs:
+   # This is the default configuration. Simply create a directory named 
+   # maps in the project config directory.
    paths: ['%kernel.project_dir%/config/maps']
+
+   # mulitple paths are allowed
+   #paths:
+   #    - '%kernel.project_dir%/config/maps'
+   #    - '%kernel.project_dir%/your/map/definition/directory'
 ```
 
-Next add a map definition file in the `%kernel.project_dir%/config/maps` directory:
+Add the `LeafletjsBundle` routes
 
 ```yaml
-# %kernel.project_dir%/config/maps/test_map.yaml
+# config/routes/leafletjs.yaml
+leafletjs:
+    resource: ../../vendor/nasumilu/ux-leafletjs/config/routing.yaml
+```
+
+Next add or create a map definition file in the configure map defintion directory:
+
+```yaml
+# config/maps/test_map.yaml
 
 test_map:
     zoom: 4
@@ -146,53 +148,14 @@ test_map:
         - { type: scale, options: { position: bottomleft, maxWidth: 300, metric: false } }
 ```
 
-```php
-
-// Controller/MapController.php
-
-class MapController extends AbstractController {
-
-
-    /**
-     * @Route("/", name="app.index")
-     * @return ResponseInterface
-     */
-    public function index(): Response
-    {
-        return $this->render('index.html.twig');
-    }
-
-    /**
-     * @Route("/webmap/{name}", name="app.webmap")
-     */
-    public function map(string $name): Response 
-    {
-        $map = $this->get('map_factory')->load($name);
-        return $this->json($map);
-    }
-
-    protected function json($data, int $status = 200, array $headers = [], array $context = []): JsonResponse
-    {
-        return parent::json($data, $status, $headers, array_merge($context, [AbstractObjectNormalizer::SKIP_NULL_VALUES => true]));
-    }
-
-    public static function getSubscribedServices()
-    {
-        return array_merge(parent::getSubscribedServices(), [
-            'map_factory' => '?'.MapFactoryInterface::class
-        ]);
-    }
-
-}
-
-```
+## Twig Extension Usage
 
 In the template use the `webmap` function:
 ```twig
 {# templates/map/index.twig.html
 {% extends "base.html.twig" %}
 {% block body %}
-    {{ webmap({ 'route': 'app.web_map', 'route_args': { 'name': 'test_map' } } ) }}
+    {{ webmap('test_map') }}
 {% endblock %}
 ```
 

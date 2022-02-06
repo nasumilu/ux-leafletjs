@@ -32,8 +32,6 @@ use function trim;
 class LeafletjsExtension extends AbstractExtension
 {
 
-    public const OPTION_ROUTE = 'route';
-    public const OPTION_ROUTE_ARGS = 'route_args';
     public const OPTION_CONTROLLER = 'controller';
     public const OPTION_ATTRIBUTES = 'attributes';
     
@@ -65,9 +63,9 @@ class LeafletjsExtension extends AbstractExtension
      * @param array $options
      * @return string
      */
-    public function renderWebMap(Environment $environment, array $options = []): string
+    public function renderWebMap(Environment $environment, string $mapName, array $options = []): string
     {
-        $url = $this->router->generate($options[self::OPTION_ROUTE], $options[self::OPTION_ROUTE_ARGS] ?? []);
+        $url = $this->router->generate('leafletjs.webmap', ['name' => $mapName]);
         
         $controllers = array_merge($options[self::OPTION_CONTROLLER] ?? [], ['@nasumilu/ux-leafletjs/leafletjs' => ['url' => $url]]);
         $html = '<div '.$this->stimulus->renderStimulusController($environment, $controllers).' ';
